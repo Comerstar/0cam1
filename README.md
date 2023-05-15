@@ -244,10 +244,10 @@ A
 BC
 ```
 
-### Section 4: Example Code
+## Section 4: Example Code
 This section is dedicated to code showing the power and usefulness of 0cam1. 
 
-## 4.1 - FizzBuzz
+### 4.1 - FizzBuzz
 ```
 997 998 = (998 - 9) ? 998 + 48: (998 - 35) ? 998 + 55 : 998 + 61,   A converter to and from ASCII
 1001 1002 1003 = 1003 ? 1002 % 62 : 1001 (1002 / 62) (1003 - 1),    Extracts a single char from a int string representation
@@ -291,7 +291,7 @@ $ (101 7) (101 6) (101 5) (101 4) (101 3) (101 2) (101 1) (101 0),
 <br>
 <br>
 
-## 4.1 - Decimal to Binary Converter
+### 4.2 - Decimal to Binary Converter
 ```
 997 998 = 998 ? 0 : 10 * (997 (998 / 2)) + 998 % 2, Converts decimal to binary
 
