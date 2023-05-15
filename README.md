@@ -20,7 +20,7 @@ This is part of the 69420 class of languages, with the original available here: 
 ## Section 2: Base Syntax
 In this section we will cover the basic syntax of 0cam1. 
 
-### 1.1 - Basic rules
+### 2.1 - Basic rules
 0cam1 does not rely on formatting as part of its syntax. Instead, it uses commas to separate different lines of code. Each line can either be an assignment, or an expression which is automatically evaluated and outputted, similarly to as follows:
 ```
 1, 2, 3 = 4,
@@ -30,7 +30,16 @@ Now let's understand basic assignment.
 <br>
 <br>
 
-### 1.2 - Basic Assignment
+### 2.2 - Comments
+0cam1 ignores all characters which are not explicitly used by the language. This means that comments can easily be written using characters no used by 0cam1, which includes all latin letters. The following is an example of valid code using comments:
+```
+one1 =equals 2twenty0 This is valid code and is equivalent to, 1=20,  
+```
+<br>
+<br>
+<br>
+
+### 2.3 - Basic Assignment
 Assignments are done in 0cam1 by `=`. When the line is executed, the left hand side is evaluated, and is set to hold the expression in the right hand side, as shown by the following:
 ```
 1 = 2, 2 = 3 + 3, (4 + 4) = 7,
@@ -60,7 +69,8 @@ Note that care must be taken to avoid creating infinite loops. The line `1=1` wi
 <br>
 <br>
 <br>
-### 1.3 Evaluation in 0cam1
+
+### 2.4 - Evaluation in 0cam1
 If we try the example
 ```
 3 = 5,
@@ -74,7 +84,8 @@ This may be surprising, but this is because 0cam1 has to evaluate th1 true value
 <br>
 <br>
 <br>
-### 1.4 Functions
+
+### 2.5 - Functions
 Having established how to assign integer values, we now move to creating functions. Functions are created in a very similar way to assigning integer values, simply by using `=` to set the function handle to the function's expression. Functions can have integer parameter names, including expressions. These are evaluated and consolidated once the function is created; once the function handle has been evaluated the function and parameter names will stay the same regardless of what happens to their underlying values. 
 
 Let's make some simple functions to see how 0cam1 works. 
@@ -89,6 +100,41 @@ Evaluates to
 9
 4
 2
+0
+```
+Like most functional programming languages, 0cam1 supports first class functions, currying, and passing around functions as arguments. This is demonstrated by the following simple examples:
+```
+99 100 101 = 100 + 101,
+40 42 43 = 42 43,
+30 = 99 10,
+40 (99 5) 4,
+30 5,
+```
+Evaluates to
+```
+9
+15
+```
+This so far is not too useful, but with a few additional structures which we will look at now, mildly useful 0cam1 programs can be made. 
+<br>
+<br>
+<br>
+
+## Section 3: Advanced Structures
+In this section we will cover the more advanced structures used to make useful 0cam1 programs. 
+
+### 3.1 - Conditional Execution
+0cam1 performs branches using the `? :` operator. This takes three variables, the condition `c`, the less than or equal to value `l`, and the greater than value `g`, in the format `c ? l : g`. If `c<=0`, then the branch returns `l`, otherwise it returns `g`. We can chain these together to produce more complex behaviours, such as the following:
+```
+997 998 999 = (999 - 998) ? (998 - 999 ? 1 : 0) : 0, This is an equality function, if nine nine eight equals nine nine nine, then it returns one, otherwise it returns zero
+997 2 2,
+997 0 2,
+997 2 0,
+```
+Which evaluates to:
+```
+1
+0
 0
 ```
 
