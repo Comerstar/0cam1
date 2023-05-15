@@ -33,16 +33,16 @@ Now let's understand basic assignment.
 ### 1.2 - Basic Assignment
 Assignments are done in 0cam1 by `=`. When the line is executed, the left hand side is evaluated, and is set to hold the expression in the right hand side, as shown by the following:
 ```
-1 = 2, 2 = 3 + 3,
+1 = 2, 2 = 3 + 3, (4 + 4) = 7,
 ```
 We can see the results of our assignments by writing expressions to evaluate the results:
 ```
-1 = 2, 2 = 3 + 3,
-1, 2, 3,
+1 = 2, 2 = 3 + 3, (4 + 4) = 7,
+1, 2, 3, 8,
 ```
 Has the following output:
 ```
-6, 6, 3
+6, 6, 3, 7
 ```
 This makes sense, `'1'` has the expression `2` assigned to it, and `'2'` has the expression `3 + 3` assigned to it, whilst `'3'` has not been altered. Therefore, when evaluating `1`, it evaluates the expression `2`. which evaluates to `3 + 3`, ultimately giving out answer of `6`. 
 
@@ -71,3 +71,24 @@ we get the output
 10
 ```
 This may be surprising, but this is because 0cam1 has to evaluate th1 true value of every integer after every calculation step. 0cam1 follows (B)(O)(DM)(AS) rules, and applies the right most operator first, so the order of operations on `3 + 2 + 1` is `3 + (2 + 1)`. When evaluating this expression, it first evaluates to `3 + (3)`, which evaluates to `5 + 5`, yielding `10`. Note that this breaks the associativity of operations: in this context `1 + 2 + 3` evaluates to `1 + (2 + 5) = 1 + 7 = 8`.
+<br>
+<br>
+<br>
+### 1.4 Functions
+Having established how to assign integer values, we now move to creating functions. Functions are created in a very similar way to assigning integer values, simply by using `=` to set the function handle to the function's expression. Functions can have integer parameter names, including expressions. These are evaluated and consolidated once the function is created; once the function handle has been evaluated the function and parameter names will stay the same regardless of what happens to their underlying values. 
+
+Let's make some simple functions to see how 0cam1 works. 
+```
+123 124 = 124 + 1,
+125 124 126 = 124 + 126,
+123 5, 125 4 5, 123 (125 1 2), 123 (2 - 1), 125 (0 - 1) 1,
+```
+Evaluates to
+```
+6
+9
+4
+2
+0
+```
+
