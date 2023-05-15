@@ -14,7 +14,9 @@ This is part of the 69420 class of languages, with the original available here: 
 ## Table of Contents
   - [Section 1: The Principles behind 0cam1](#section-1-the-principles-behind-0cam1)
   - [Section 2: Basic Syntax](#section-2-basic-syntax)
-    - [2.1 - Basic Rules](#12---basic-rules)
+    - [2.1 - Basic Rules](#21---basic-rules)
+    - [2.2 - Comments](#22---comments)
+    - [2.3 - Basic Assignment](#23---basic-assignment)
 
 ## Section 1: The Principles behind 0cam1
 0cam1 is designed with one core aim, and one core principle. Understanding these will make understanding the way the language functions much easier. Firstly, 0cam1 aims to give programmers the neat simplicity of functional programming, whilst giving them the power of mutability. Secondly, 0cam1 is as lazy as possible: values are only updated when they are absolutely needed. 
@@ -22,7 +24,7 @@ This is part of the 69420 class of languages, with the original available here: 
 ## Section 2: Basic Syntax
 In this section we will cover the basic syntax of 0cam1. 
 
-### 2.1 - Basic rules
+### 2.1 - Basic Rules
 0cam1 does not rely on formatting as part of its syntax. Instead, it uses commas to separate different lines of code. Each line can either be an assignment, or an expression which is automatically evaluated and outputted, similarly to as follows:
 ```
 1, 2, 3 = 4,
