@@ -16,7 +16,16 @@ This is part of the 69420 class of languages, with the original available here: 
   - [Section 2: Basic Syntax](#section-2-basic-syntax)
     - [2.1 - Basic Rules](#21---basic-rules)
     - [2.2 - Comments](#22---comments)
-    - [2.3 - Basic Assignment](#23---basic-assignment)
+    - [2.3 - Basic Expressions](#23---basic-expressions)
+    - [2.4 - Basic Assignment](#24---basic-assignment)
+    - [2.5 - Evaluation in 0cam1](#25---evaluation-in-0cam1)
+    - [2.6 - Functions](#26---functions)
+  - [Section 3: Advanced Structures](#section-3-advanced-structures)
+    - [3.1 - Conditional Execution](#31---conditional-execution)
+    - [3.2 - Anonymous Functions](#32---anonymous-functions)
+    - [3.3 - Trivialisation](#33---trivialisation)
+    - [3.4 - Character Output](#34-character-output)
+  - [Section 4: Example Code](#section-4-example-code)
 
 ## Section 1: The Principles behind 0cam1
 0cam1 is designed with one core aim, and one core principle. Understanding these will make understanding the way the language functions much easier. Firstly, 0cam1 aims to give programmers the neat simplicity of functional programming, whilst giving them the power of mutability. Secondly, 0cam1 is as lazy as possible: values are only updated when they are absolutely needed. 
