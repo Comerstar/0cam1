@@ -76,12 +76,11 @@ These can easily combine in more complex expressions:
 1 = 2, 2 = 3 + 3,
 1 + 2 + 3,
 ```
-
 Has the following output:
 ```
 15
 ```
-Note that care must be taken to avoid creating infinite loops. The line `1=1` will never terminate. 
+Note that care must be taken to avoid creating infinite loops. The line `1=1` will never terminate. Additionally, how the left hand side is evaluated varies. If the left hand side is a simple int, then it is not resolved to the root value, and is taken directly (so `1 = 2,` will always set `'1'` to `2` regardless of the value of `1`). Any other expression is evaluated, which can be forced by using brackets (so `(1) = 2` will force the interpreter to resolve the true value of `1`).
 <br>
 <br>
 <br>
@@ -102,7 +101,7 @@ This may be surprising, but this is because 0cam1 has to evaluate th1 true value
 <br>
 
 ### 2.6 - Functions
-Having established how to assign integer values, we now move to creating functions. Functions are created in a very similar way to assigning integer values, simply by using `=` to set the function handle to the function's expression. Functions can have integer parameter names, including expressions. These are evaluated and consolidated once the function is created; once the function handle has been evaluated the function and parameter names will stay the same regardless of what happens to their underlying values. Functions can be called simply by listing out the passed in parameters with whitespace between. 
+Having established how to assign integer values, we now move to creating functions. Functions are created in a very similar way to assigning integer values, simply by using `=` to set the function handle to the function's expression. Functions can have integer parameter names, including expressions. These are evaluated and consolidated once the function is created; once the function handle has been evaluated the function and parameter names will stay the same regardless of what happens to their underlying values. The name evaluation for function names and parameters is similar to that of basic assignment; simple ints are taken directly, but any other expression is resolved. Functions can be called simply by listing out the passed in parameters with whitespace between. 
 
 Let's make some simple functions to see how 0cam1 works. 
 ```
@@ -245,3 +244,44 @@ BC
 
 ### Section 4: Example Code
 This section is dedicated to code showing the power and usefulness of 0cam1. 
+
+## 4.1 - FizzBuzz
+```
+997 998 = (998 - 9) ? 998 + 48: (998 - 35) ? 998 + 55 : 998 + 61,   A converter to and from ASCII
+1001 1002 1003 = 1003 ? 1002 % 62 : 1001 (1002 / 62) (1003 - 1),    Extracts a single char from a int string representation
+1004 1005 = 1005 ? 0 : (1005 % 10) + 62 * (1004 (1005 / 10)),       Converts a number into a int string representation
+
+Fizz buzz
+1007 1009 = (1009 % 3) ? ((1009 % 5) ?  2840715 + 14776336 * 3747899 : 3747899) : (1009 % 5) ? 2840715 : 1004 1009,
+101 1013 = 997 (1001 100 1013),                                     A helper function to make the code neater
+
+Calculate and print the results
+100 = 1007 1,
+$ (101 7) (101 6) (101 5) (101 4) (101 3) (101 2) (101 1) (101 0),
+100 = 1007 2,
+$ (101 7) (101 6) (101 5) (101 4) (101 3) (101 2) (101 1) (101 0),
+100 = 1007 3,
+$ (101 7) (101 6) (101 5) (101 4) (101 3) (101 2) (101 1) (101 0),
+100 = 1007 4,
+$ (101 7) (101 6) (101 5) (101 4) (101 3) (101 2) (101 1) (101 0),
+100 = 1007 5,
+$ (101 7) (101 6) (101 5) (101 4) (101 3) (101 2) (101 1) (101 0),
+100 = 1007 6,
+$ (101 7) (101 6) (101 5) (101 4) (101 3) (101 2) (101 1) (101 0),
+100 = 1007 7,
+$ (101 7) (101 6) (101 5) (101 4) (101 3) (101 2) (101 1) (101 0),
+100 = 1007 9,
+$ (101 7) (101 6) (101 5) (101 4) (101 3) (101 2) (101 1) (101 0),
+100 = 1007 10,
+$ (101 7) (101 6) (101 5) (101 4) (101 3) (101 2) (101 1) (101 0),
+100 = 1007 11,
+$ (101 7) (101 6) (101 5) (101 4) (101 3) (101 2) (101 1) (101 0),
+100 = 1007 12,
+$ (101 7) (101 6) (101 5) (101 4) (101 3) (101 2) (101 1) (101 0),
+100 = 1007 13,
+$ (101 7) (101 6) (101 5) (101 4) (101 3) (101 2) (101 1) (101 0),
+100 = 1007 14,
+$ (101 7) (101 6) (101 5) (101 4) (101 3) (101 2) (101 1) (101 0),
+100 = 1007 15,
+$ (101 7) (101 6) (101 5) (101 4) (101 3) (101 2) (101 1) (101 0),
+```
