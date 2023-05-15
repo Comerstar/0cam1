@@ -12,12 +12,14 @@ This is part of the 69420 class of languages, with the original available here: 
 > **__NOTE:__** All code examples assume no prior assignment. Be aware that the assignment of values will significantly impact the result of the program. Throughout the guide, `'1'` will be the notation used to represent numerical names. 
 
 ## Table of Contents
-  - [Section 1: ]
+  - [Section 1: The Principles behind 0cam1](#section-1-the-principles-behind-0cam1)
+  - [Section 2: Basic Syntax](#section-2-basic-syntax)
+    - [2.1 - Basic Rules](#12---basic-rules)
 
 ## Section 1: The Principles behind 0cam1
 0cam1 is designed with one core aim, and one core principle. Understanding these will make understanding the way the language functions much easier. Firstly, 0cam1 aims to give programmers the neat simplicity of functional programming, whilst giving them the power of mutability. Secondly, 0cam1 is as lazy as possible: values are only updated when they are absolutely needed. 
 
-## Section 2: Base Syntax
+## Section 2: Basic Syntax
 In this section we will cover the basic syntax of 0cam1. 
 
 ### 2.1 - Basic rules
