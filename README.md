@@ -39,7 +39,10 @@ one1 =equals 2twenty0 This is valid code and is equivalent to, 1=20,
 <br>
 <br>
 
-### 2.3 - Basic Assignment
+### 2.3 - Basic Expressions
+0cam1 supports a variety of integer operations, including addition via `+`, multiplication via `*`, subtraction via `-`, integer division via `/`, modulo via `%`, bitwise and via `&`, and bitwise or via `|`. 
+
+### 2.4 - Basic Assignment
 Assignments are done in 0cam1 by `=`. When the line is executed, the left hand side is evaluated, and is set to hold the expression in the right hand side, as shown by the following:
 ```
 1 = 2, 2 = 3 + 3, (4 + 4) = 7,
@@ -70,7 +73,7 @@ Note that care must be taken to avoid creating infinite loops. The line `1=1` wi
 <br>
 <br>
 
-### 2.4 - Evaluation in 0cam1
+### 2.5 - Evaluation in 0cam1
 If we try the example
 ```
 3 = 5,
@@ -85,8 +88,8 @@ This may be surprising, but this is because 0cam1 has to evaluate th1 true value
 <br>
 <br>
 
-### 2.5 - Functions
-Having established how to assign integer values, we now move to creating functions. Functions are created in a very similar way to assigning integer values, simply by using `=` to set the function handle to the function's expression. Functions can have integer parameter names, including expressions. These are evaluated and consolidated once the function is created; once the function handle has been evaluated the function and parameter names will stay the same regardless of what happens to their underlying values. 
+### 2.6 - Functions
+Having established how to assign integer values, we now move to creating functions. Functions are created in a very similar way to assigning integer values, simply by using `=` to set the function handle to the function's expression. Functions can have integer parameter names, including expressions. These are evaluated and consolidated once the function is created; once the function handle has been evaluated the function and parameter names will stay the same regardless of what happens to their underlying values. Functions can be called simply by listing out the passed in parameters with whitespace between. 
 
 Let's make some simple functions to see how 0cam1 works. 
 ```
@@ -102,7 +105,7 @@ Evaluates to
 2
 0
 ```
-Like most functional programming languages, 0cam1 supports first class functions, currying, and passing around functions as arguments. This is demonstrated by the following simple examples:
+Like most functional programming languages, 0cam1 supports first class functions, currying, and passing around functions as arguments. Note that curried arguments are still evaluated lazily when called rather than when saved. This is demonstrated by the following simple examples:
 ```
 99 100 101 = 100 + 101,
 40 42 43 = 42 43,
@@ -184,3 +187,48 @@ Which gives the output:
 0
 0
 ```
+<br>
+<br>
+<br>
+
+### 3.3 - Trivialisation
+What happens when we want to reset a value to its value before any assignments? The answer is we can use trivialisation to trivially reset a value to its trivial value. The trivialisation function is trivially the empty set, and can be trivially applied to multiple names at once. Trivialisation is the one function that does not trivially evaluate names through the dependency chain, instead clearing the exact name of the given integer. Due to this, trivialisation trivially cannot accept expressions as arguments, and only accepts direct integers, as trivially shown by the following:
+```
+1 = 2, 2 = 3, 3 = 4, 5 = 7, 6 = 8, 4 = 9, Made a bit of a mess, and want to clear it up
+1, 2, 3, 4, 5, 6,                         Pre trivialisation
+{} 1 3 5,                                 Trivialisation
+1, 2, 3, 4, 5, 6,                         Post trivialisation
+```
+Trivially returning:
+```
+9
+9
+9
+9
+7
+8
+1
+3
+3
+9
+5
+8
+```
+Due to the fact the trivialisation alters the mappings on the base execution layer, trivialisation is not allowed within functions, and is only valid when on a line by itself. 
+<br>
+<br>
+<br>
+
+### 3.4 - Character Output
+Sometimes we may wish to abandon integers for characters. In such rare cases, the character output function `$` can help us, converting integers into their relevant characters, and outputting the result. Note that similar to trivialisation, `$` can receive multiple parameters which are all printed as one string, and is also restricted to use on a line by itself, and not within functions. Here is some basic code using `$`:
+```
+$ 65, $ 66 67,
+```
+Which prints:
+```
+A
+BC
+```
+
+### Section 4: Example Code
+This section is dedicated to code showing the power and usefulness of 0cam1. 
