@@ -174,7 +174,11 @@ def execute(tree_code):
         if i[0] == "assign":
             name = i[1]
             if name[0] == "name":
-                res = evaluate_expr(name[1], base_context)
+                res = None
+                if name[1][0] == "int":
+                    res = name[1]
+                else:
+                    res = evaluate_expr(name[1], base_context)
                 if res[0] == "func":
                     raise Exception("Attempted to assign to funtion")
                 if i[2][0] == "int":
@@ -182,23 +186,31 @@ def execute(tree_code):
                 else:
                     base_context[res[1]] = ("intf", i[2])
             elif name[0] == "handle":
-                res = evaluate_expr(name[1], base_context)
+                if name[1][0] == "int":
+                    res = name[1]
+                else:
+                    res = evaluate_expr(name[1], base_context)
                 if res[0] == "func":
                     raise Exception("Attempted to assign to funtion")
-                base_context[res[1]] = ("func", [evaluate_expr(j, base_context) for j in name[2]], i[2])
+                evaluated = []
+                for j in name[2]:
+                    if j[0] == "int":
+                        evaluated.append(j)
+                    else:
+                        evaluated.append(evaluate_expr(j, base_context))
+                base_context[res[1]] = ("func", evaluated, i[2])
                 
         else:
             triv = False
             if i[0] == "func_call":
                 if i[1] == ("triv", "{}"):
-                    # print(i)
                     triv = True
                     for j in i[2]:
-                        # print(j)
                         if j[0] != "int":
                             raise Exception("Attempted to trivialise non-int")
                         if j[1] in base_context.keys():
                             base_context.pop(j[1])
+                            
                 elif i[1] == ("$", "$"):
                     triv = True
                     output_string = ""
@@ -210,6 +222,7 @@ def execute(tree_code):
                             raise Exception("Attempted to print a function")
                     print(output_string)
                     output_text += output_string + "\n"
+                    
             if not triv:
                 res = evaluate_expr(i, base_context)
                 if res[0] == "int":
