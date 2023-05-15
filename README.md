@@ -56,6 +56,9 @@ one1 =equals 2twenty0 This is valid code and is equivalent to, 1=20,
 
 ### 2.3 - Basic Expressions
 0cam1 supports a variety of integer operations, including addition via `+`, multiplication via `*`, subtraction via `-`, integer division via `/`, modulo via `%`, bitwise and via `&`, and bitwise or via `|`. 
+<br>
+<br>
+<br>
 
 ### 2.4 - Basic Assignment
 Assignments are done in 0cam1 by `=`. When the line is executed, the left hand side is evaluated, and is set to hold the expression in the right hand side, as shown by the following:
