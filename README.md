@@ -137,4 +137,50 @@ Which evaluates to:
 0
 0
 ```
+Like in most functional languages, combining conditional branches with recursion allows for the creation of loops. This opens the door to a significant number of programs, such as the following:
+```
+9997 9998 = 9998 + 1 ? 0 : 9998 + 9997 (9998 - 1),                                   A function to calculate triangular numbers
+16180 33988 = 33988 ? 0 : 33988 - 1 ? 1 : (16180 (33988 - 1)) + (16180 (33988 - 2)), A function to calculate the Fibonacci numbers
+9997 14,
+16180 10,
+```
+Which outputs:
+```
+105
+55
+```
+This can combine with first class functions to produce the following:
+```
+9996 9997 9998 9999 = 9998 ? 9999 : 9997 (9996 9997 (9998 - 1) 9999), Applies a function n times to an initial value x
+10001 10002 = 10002 + 1,                                              Creates a successor function
+10003 10004 10005 = 9996 10001 10004 10005,                           Creates an addition function from repeated succession
+10006 10007 10008 = 9996 (10003 10007) 10008 0,                       Creates a multiplication function from repeated addition
+10009 10010 10011 = 9996 (10006 10010) 10011 1,                       Creates an exponentiation function from repeated multiplication
+10003 2 5,
+10006 2 5,
+10009 2 5,
+```
+Which evaluates to:
+```
+7
+10
+32
+```
+<br>
+<br>
+<br>
 
+### 3.2 - Anonymous Functions
+0cam1 supports anonymous functions through the `>` operator. The syntax is exactly the same as assigning a named function, however the function name is not required. Since anonymous functions and their names are only evaluated when the function is needed, anonymous functions feature lazy name evaluation, which can have interesting use cases. Here is some example code that uses anonymous functions to check if a given value is one:
+```
+9990 9991 = ((9991 - 1) > 0) 9991, Since the parameter name is evaluate once the functions parameter is passed in the name can be zero if the input is one which alters the returned value
+9990 1,
+9990 0,
+9990 2,
+```
+Which gives the output:
+```
+1
+0
+0
+```
