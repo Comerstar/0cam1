@@ -26,6 +26,8 @@ This is part of the 69420 class of languages, with the original available here: 
     - [3.3 - Trivialisation](#33---trivialisation)
     - [3.4 - Character Output](#34-character-output)
   - [Section 4: Example Code](#section-4-example-code)
+    - [4.1 - FizzBuzz](#41---fizzbuzz)
+    - [4.2 - Decimal to Binary Converter](#42---decimal-to-binary-converter)
 
 ## Section 1: The Principles behind 0cam1
 0cam1 is designed with one core aim, and one core principle. Understanding these will make understanding the way the language functions much easier. Firstly, 0cam1 aims to give programmers the neat simplicity of functional programming, whilst giving them the power of mutability. Secondly, 0cam1 is as lazy as possible: values are only updated when they are absolutely needed. 
@@ -284,4 +286,24 @@ $ (101 7) (101 6) (101 5) (101 4) (101 3) (101 2) (101 1) (101 0),
 $ (101 7) (101 6) (101 5) (101 4) (101 3) (101 2) (101 1) (101 0),
 100 = 1007 15,
 $ (101 7) (101 6) (101 5) (101 4) (101 3) (101 2) (101 1) (101 0),
+```
+<br>
+<br>
+<br>
+
+## 4.1 - Decimal to Binary Converter
+```
+997 998 = 998 ? 0 : 10 * (997 (998 / 2)) + 998 % 2, Converts decimal to binary
+
+Several test cases to show it working
+997 5, 
+997 10, 
+997 13, 
+997 25, 
+997 47, 
+997 100, 
+997 1000, 
+997 10000, 
+997 100000, 
+997 9999999,
 ```
