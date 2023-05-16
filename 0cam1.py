@@ -142,15 +142,15 @@ def syntax_tree(tokens, state):
         for i in tokens:
             if i[0] == ",":
                 if len(line) != 0:
-                    try:
+                    #try:
                         lines.append(syntax_tree(line, "line"))
                         line = []
-                    except Exception as e:
-                        try:
-                            print("Exception " + str(e) + " when parsing line " + conv_tokens_to_string(line))
-                        except Exception as e:
-                            print("Exeption " + str(e) + " when converting line")
-                        return []
+                    #except Exception as e:
+                        #try:
+                            #print("Exception " + str(e) + " when parsing line " + conv_tokens_to_string(line))
+                        #except Exception as e:
+                            #print("Exeption " + str(e) + " when converting line")
+                        #return []
             else:
                 line.append(i)
         return lines
@@ -364,7 +364,9 @@ def conv_to_code(value, direct = True):
         return "!".join([conv_to_code(i) for i in value[1]])
     elif value[0] == "cond":
         return conv_to_code(value[1]) + "?" + conv_to_code(value[2]) + ":" + conv_to_code(value[3])
-    raise Exception("MISSING CASE IN CONV_CODE " + str(value[0]))
+    elif value[0] == "part_f":
+        return "(" + conv_to_code(value[1]) + ") " + " ".join([conv_to_code(i) for i in value[2]])
+    raise Exception("MISSING CASE IN CONV_CODE " + str(value))
 
 
 def conv_list_to_string(value, start = True):
@@ -699,8 +701,9 @@ def eval_expr(tree, context, output, get_name = False):
     elif tree[0] == "cond":
         cond = tree[1]
         res = eval_expr(cond, context, output)
-        if res[0] == "func":
-            raise Exception("Attempted to compare to a function")
+        if res[0] != "int":
+            print(tree, "\n", res)
+            raise Exception("Attempted to compare to a non-int")
         if res[1] <= 0:
             return eval_expr(tree[2], context, output, get_name)
         else:
@@ -845,7 +848,7 @@ else:
         with open(filename, "w") as code_file:
             code_file.write(conv_to_code(tree_code))
             
-        # print("Tree: ", tree_code)
+        print("Tree: ", tree_code)
         # print("--==EXECUTING==--")
         output, errors, final_context = execute(tree_code)
         # print("--==FINISHED==--")
