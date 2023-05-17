@@ -121,7 +121,7 @@ This may be surprising, but this is because 0cam1 has to evaluate the true value
 <br>
 
 ### 2.6 - Name Evaluation
-Names in 0cam1 are evluated slightly differently to standard expressions. If a direct integer is given for a name, the direct integer is returned. Otherwise the expression is evaluateed. Names must always evaluate to an integer. Note that brackets can be used to force evaluation. Name evaluation is used for variable names, function names and paramters, type names and parameters, and values being trivialised. This behaviour is demonstrated by the following code:
+Names in 0cam1 are evaluated slightly differently to standard expressions. If a direct integer is given for a name, the direct integer is returned. Otherwise the expression is evaluateed. Names must always evaluate to an integer. Note that brackets can be used to force evaluation. Name evaluation is used for variable names, function names and paramters, type names and parameters, and values being trivialised. This behaviour is demonstrated by the following code:
 ```
 3 = 4, (3) = 7, 3 = 6, 
 3, 4
