@@ -152,7 +152,7 @@ Evaluates to
 2
 0
 ```
-Note that when returned, 0cam1 automatically prints them as  alist of parameters, followed by `>`, followed by a rough expression of what the function equals, as shown by:
+Note that when returned, 0cam1 automatically prints them as a list of parameters, followed by `>`, followed by a rough expression of what the function equals, as shown by:
 ```
 123 124 = 124 + 1,
 125 124 126 = 124 + 126,
