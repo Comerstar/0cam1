@@ -124,6 +124,17 @@ Evaluates to
 2
 0
 ```
+Note that when returned, 0cam1 automatically prints them as  alist of parameters, followed by `>`, followed by a rough expression of what the function equals, as shown by:
+```
+123 124 = 124 + 1,
+125 124 126 = 124 + 126,
+123, 125
+```
+Returning:
+```
+124 > 124+1
+124 126 > 124+126
+```
 Like most functional programming languages, 0cam1 supports first class functions, currying, and passing around functions as arguments. Note that curried arguments are still evaluated lazily when called rather than when saved. This is demonstrated by the following simple examples:
 ```
 99 100 101 = 100 + 101,
@@ -264,20 +275,60 @@ Which could evalute
 
 ## Section 4: Advanced Structures
 In this section, we'll cover the most advanced 0cam1 structures. 
-## Section 4.1: Types
+### Section 4.1: Types
 0cam1 supports types. To create a type, assign to \_, akin to the following:
 ```
 _ = 123 ! 124 125 126,
 ```
+When types are returned, 0cam1 prints them as a list of their parameter names, followed by an !, as shown by the following:
+```
+_ = 123 ! 124 125 126,
+123, 124,
+```
+Which outputs:
+```
+123 
+125 126 !
+```
+Note the use of `!` to separate different constructors for the same type. 
 This creates the constructors `123` and `124`. We can then instantiate this type using the constructors. For example:
 ```
 _ = 123 ! 124 125 126,
-123, 124 5 (124 6 123),
+123, 124 5 (124 6 123), 3 = 123, 124 2 3,
 ```
 Evaluates to:
 ```
 123 
 124 5 124 6 123
+124 2 3
+```
+This shows how 0cam1 returns constructed objects, as their constructor, followed by their parameters roughly as expressions. This also shows 0cam1's lazy evaluation, since `3` is not evaluated to `123` until it is needed.
+Partial constructor calls are also possible, and return a new type, such as in the following:
+```
+_ = 123 ! 124 125 126,
+124 5, (124 5) 123,
+```
+Which returns:
+```
+126 !
+124 5 123
+```
+We may wonder what are types useful for, since we currently cannot manipulate them. To fix this, we add...
+<br>
+<br>
+<br>
+
+### Section 4.2 Pattern Matching
+Pattern matching allows us to usefully check what types our values have, and extract their constructor values. The pattern matching is done using `!`, which also acts as the separator between the various statements: the first statement is the value being comapred to, the rest are match cases. A match case consists of a thing to match, followed by `>` and the expression to return if the case is matched. Pattern matching matches types, matching the constructors, and passed in values. For example, if we have a type `_ = 7331 23 24`, then `(7331 1 2)  ! 7331 1 > 0 ! 7331 > 2` returns `0`, and `(7331 2 2)  ! 7331 1 > 0 ! 7331 > 2` returns `2`. In order to access the parameters passed ot the constructors, unmatched parameters are written into the match's context using the constructor's parameter names. So `(7331 1 2)  ! 7331 1 > 23 ! 7331 > 23` returns `23` since the `1` is matched, and `(7331 2 2)  ! 7331 1 > 23 ! 7331 > 23` returns `2` since the `2` is not. This allows us to make some brief full example code:
+```
+_ = 123 124 125! 236,
+997 998 = 998 ! 236 > 0 ! 123 > 1 + 997 125,
+997 236, 997 (123 5 (123 6 236)),
+```
+Which gives:
+```
+0
+2
 ```
 <br>
 <br>
