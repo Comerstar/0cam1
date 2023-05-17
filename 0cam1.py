@@ -673,9 +673,19 @@ def eval_expr(tree, context, output, get_name = False, strict = False):
                         temp_context[res[1]] = eval_expr(params[i], context, output, strict = strict)
                 return eval_expr(expr, temp_context, output, get_name, strict)
             elif len(params) < len(param_names):
+                eval_params = []
+                for i in params:
+                    if i[0] == "!?":
+                        eval_params.append(eval_expr(i[1], context, output, strict = strict))
+                    elif i[0] == "!!":
+                        eval_params.append(eval_expr(i[1], context, output, strict = True))
+                    elif strict:
+                        eval_params.append(eval_expr(i, context, output, strict = strict))
+                    else:
+                        eval_params.append(i)
                 if get_name:
-                    return ("name", (), ("func", param_names[len(params):], ("part_f", param_names[:len(params)], params, expr)))
-                return ("func", param_names[len(params):], ("part_f", param_names[:len(params)], params, expr))
+                    return ("name", (), ("func", param_names[len(params):], ("part_f", param_names[:len(params)], eval_params, expr)))
+                return ("func", param_names[len(params):], ("part_f", param_names[:len(params)], eval_params, expr))
             else:
                 raise Exception("Too many arguments for function")
         elif res[0] == "type":
