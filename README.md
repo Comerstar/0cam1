@@ -46,6 +46,9 @@ This is part of the 69420 class of languages, with the original available here: 
 ## Section 1: The Principles behind 0cam1
 0cam1 is designed with one core aim, and one core principle. Understanding these will make understanding the way the language functions much easier. Firstly, 0cam1 aims to give programmers the neat simplicity of functional programming, whilst giving them the power of mutability. Secondly, 0cam1 is as lazy as possible: values are only updated when they are absolutely needed. 0cam1 is also designed to be as logically consist and robust as possible, with all possible types being treated as equally as possible. Additionally, anything that does not have a return type is accessed through assignments, representing the fact that it does not return anything. 
 
+<br>
+<br>
+
 ## Section 2: Basic Syntax
 In this section we will cover the basic syntax of 0cam1. 
 
@@ -57,7 +60,6 @@ In this section we will cover the basic syntax of 0cam1.
 If variable names are integers, then how are character treated? Well, they are treated as...
 <br>
 <br>
-<br>
 
 ### 2.2 - Comments
 0cam1 ignores all characters which are not explicitly used by the language. This means that comments can easily be written using characters no used by 0cam1, which includes all latin letters. The following is an example of valid code using comments:
@@ -66,12 +68,10 @@ one19nine =equals 2twenty1one This is valid code and is equivalent to, 19=21,
 ```
 <br>
 <br>
-<br>
 
 ### 2.3 - Basic Expressions
 0cam1 supports a variety of integer operations, including addition via `+`, multiplication via `*`, subtraction via `-`, integer division via `/`, backwards integer division via `\`, modulo via `%`, bitwise and via `&`, and bitwise or via `|`. Brackets are also supported by 0cam1.
 Now let's understand basic assignment. 
-<br>
 <br>
 <br>
 
@@ -106,7 +106,6 @@ Has the following output:
 Note that care must be taken to avoid creating infinite loops. The line `1=1, 1,` will never terminate. 
 <br>
 <br>
-<br>
 
 ### 2.5 - Evaluation in 0cam1
 If we try the example
@@ -121,7 +120,6 @@ we get the output
 This may be surprising, but this is because 0cam1 has to evaluate the true value of every integer after every calculation step. 0cam1 follows (B)(O)(DM)(AS) rules, and applies the right most operator first, so the order of operations on `3 + 2 + 1` is `3 + (2 + 1)`. When evaluating this expression, it first evaluates to `3 + (3)`, which evaluates to `5 + 5`, yielding `10`. Note that this breaks the associativity of operations: in this context `1 + 2 + 3` evaluates to `1 + (2 + 5) = 1 + 7 = 8`.
 <br>
 <br>
-<br>
 
 ### 2.6 - Name Evaluation
 Names in 0cam1 are evaluated slightly differently to standard expressions. If a direct integer is given for a name, the direct integer is returned. Otherwise the expression is evaluateed. Names must always evaluate to an integer. Note that brackets can be used to force evaluation. Name evaluation is used for variable names, function names and paramters, type names and parameters, and values being trivialised. This behaviour is demonstrated by the following code:
@@ -134,7 +132,6 @@ Which evaluates to:
 6
 7
 ```
-<br>
 <br>
 <br>
 
@@ -183,7 +180,6 @@ Evaluates to
 7
 ```
 This so far is not too useful, but with a few additional structures which we will look at now, mildly useful 0cam1 programs can be made. 
-<br>
 <br>
 <br>
 
@@ -235,7 +231,6 @@ Which evaluates to:
 ```
 <br>
 <br>
-<br>
 
 ### 3.2 - Anonymous Functions
 0cam1 supports anonymous functions through the `>` operator. The syntax is exactly the same as assigning a named function, however the function name is not required. Since anonymous functions and their names are only evaluated when the function is needed, anonymous functions feature lazy name evaluation, which can have interesting use cases. Here is some example code that uses anonymous functions to check if a given value is one:
@@ -251,7 +246,6 @@ Which gives the output:
 0
 0
 ```
-<br>
 <br>
 <br>
 
@@ -281,7 +275,6 @@ Trivially returning:
 Note that the names provided by trivialisation are evaluated like all names in 0cam1; if a direct value is given it is used without further evaluation, otherwise the expression is evaluated. 
 <br>
 <br>
-<br>
 
 ### 3.4 - Random Numbers
 0cam1 features the inbuilt `??` function for generating random numbers. It can be called with either 0, 1, or 2 parameters. When called with 0 parameters, it returns a random integer from 0 to 1. When called with 1 parameter, it returns a random integer from 0 to the first parameter. When called with 2 parameters, it returns a random integer between the two parameters. Here is an example:
@@ -303,7 +296,6 @@ Which could evalute to:
 0
 5
 ```
-<br>
 <br>
 <br>
 
@@ -350,7 +342,6 @@ Which returns:
 We may wonder what are types useful for, since we currently cannot manipulate them. To fix this, we add...
 <br>
 <br>
-<br>
 
 ### 4.2 - Pattern Matching
 Pattern matching allows us to usefully check what types our values have, and extract their constructor values. The pattern matching is done using `!`, which also acts as the separator between the various statements: the first statement is the value being comapred to, the rest are match cases. A match case consists of a thing to match, followed by `>` and the expression to return if the case is matched. Pattern matching matches types, matching the constructors, and passed in values. For example, if we have a type `_ = 7331 23 24`, then `(7331 1 2)  ! 7331 1 > 0 ! 7331 > 2` returns `0`, and `(7331 2 2)  ! 7331 1 > 0 ! 7331 > 2` returns `2`. In order to access the parameters passed ot the constructors, unmatched parameters are written into the match's context using the constructor's parameter names. So `(7331 1 2)  ! 7331 1 > 23 ! 7331 > 23` returns `23` since the `1` is matched, and `(7331 2 2)  ! 7331 1 > 23 ! 7331 > 23` returns `2` since the `2` is not. This allows us to make some brief full example code:
@@ -366,7 +357,6 @@ Which gives:
 ```
 <br>
 <br>
-<br>
 
 ### 4.3 - Unit
 Sometimes we want to have a dummy object that has no inherent meaning. To achieve this we use `()`, aka unit. `()` can be used for parameter names, and has the effect of discarding the parameter by not assigning it into the namespace. `()` can also be used as an input when no input is required. Additionally, `()` combined with anything else by an operator returns `()`. This is all shown by the following:
@@ -380,7 +370,6 @@ Printing:
 ()
 ()
 ```
-<br>
 <br>
 <br>
 
@@ -420,7 +409,6 @@ Which gives:
 Note that `+`'s two parameters are units, and therefore do not alter the namespace when matched to. 
 <br>
 <br>
-<br>
 
 ### 4.5 - Character Output
 We can output characters by writing to `$`. Like `{}`, `$` can be assigned to any number of values, which are evaluated, converted to strings, conctenated, and outputted. `$` can automatically convert any integer, and any list structure which ultimately contains only integers. For example:
@@ -433,7 +421,6 @@ Results in:
 A
 Hello World!
 ```
-<br>
 <br>
 <br>
 
@@ -451,7 +438,6 @@ Input
 ```
 <br>
 <br>
-<br>
 
 ### 4.7 - Temporary Assignments and Side Effects
 Sometimes we want to temporarily assign values. 0cam1 does this using `.`, which separates the different statements, of which the last must return a value, and the rest will only perform side effects. Any expressions in a side effect statement will merely output its result. When performing temporary assignments, `~` is used instead of `=`. All of the features of `=`, including trivialisation and character output are available through this. All temporary bindings will be lost once the final statement is evaluated. Note tha side effect statements are evaluated in order. This explains how:
@@ -466,7 +452,6 @@ B
 5
 3
 ```
-<br>
 <br>
 <br>
 
@@ -506,7 +491,6 @@ Respond
 ```
 <br>
 <br>
-<br>
 
 ### 5.2 - Decimal to Binary Converter
 ```
@@ -516,7 +500,6 @@ Several test cases to show it working
 $ ~ (73+110+112+117+116+[]).
 (997 [] <)), 
 ```
-<br>
 <br>
 <br>
 
