@@ -419,7 +419,7 @@ def conv_to_string(value):
             return conv_list_to_string(value)
         output = ""
         for i in value[2]:
-            output += conv_to_string(i) + " "
+            output += conv_to_code(i) + " "
         output = output[:-1]
         return str(value[1]) + " " + output
     elif value[0] == "type":
@@ -428,7 +428,7 @@ def conv_to_string(value):
             output += conv_to_string(i) + " "
         return output + "!"
     else:
-        raise Exception("Unprintable type")
+        raise Exception("Unprintable type" + str(value))
     raise Exception("MISSING PRINT CASE")
 
 
