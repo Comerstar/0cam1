@@ -135,22 +135,21 @@ def conv_tokens_to_string(tokens):
 
 
 def syntax_tree(tokens, state):
-    
     if state == "file":
         lines = []
         line = []
         for i in tokens:
             if i[0] == ",":
                 if len(line) != 0:
-                    #try:
+                    try:
                         lines.append(syntax_tree(line, "line"))
                         line = []
-                    #except Exception as e:
-                        #try:
-                            #print("Exception " + str(e) + " when parsing line " + conv_tokens_to_string(line))
-                        #except Exception as e:
-                            #print("Exeption " + str(e) + " when converting line")
-                        #return []
+                    except Exception as e:
+                        try:
+                            print("Exception " + str(e) + " when parsing line " + conv_tokens_to_string(line))
+                        except Exception as e:
+                            print("Exeption " + str(e) + " when converting line")
+                        return []
             else:
                 line.append(i)
         return lines
@@ -231,7 +230,7 @@ def syntax_tree(tokens, state):
             for i in splits[1:]:
                 patterns.append(syntax_tree(i, "match"))
             return ("pattern", syntax_tree(splits[0], "expr"), patterns)
-        elif (".", ".") in tokens:
+        elif (".", ".") in tokens and ("?", "?") not in tokens:
             splits = split_list(tokens, (".", "."))
             assigns = []
             for i in splits[:-1]:
@@ -261,11 +260,11 @@ def syntax_tree(tokens, state):
                             op = i[0]
                 prev_i = i[0]
             if op == "func_call":
-                if len(tokens) == 2:
+                if len(tokens) > 1:
                     if tokens[0][0] == "-":
-                        return ("neg", syntax_tree([tokens[1]], "expr"))
+                        return ("neg", syntax_tree(tokens[1:], "expr"))
                     elif tokens[0][0] == "*":
-                        return ("star", syntax_tree([tokens[1]], "expr"))
+                        return ("star", syntax_tree(tokens[1:], "expr"))
                 evaluated = []
                 for i in tokens:
                     evaluated.append(syntax_tree([i], "expr"))
@@ -285,7 +284,7 @@ def syntax_tree(tokens, state):
                 return (op, 
                         syntax_tree(tokens[: ind], "expr"), 
                         syntax_tree(tokens[ind + 1:], "expr"))
-        raise Exception("MISSING CASE IN PARSING")
+        raise Exception("MISSING CASE IN PARSING " + conv_tokens_to_string(tokens) + " IN STATE " + state)
             
 class Output:
     
@@ -766,10 +765,11 @@ def eval_expr(tree, context, output, get_name = False):
         raise Exception("Attempted to negate an invalid object")
     
     elif tree[0] == "star":
+        res = eval_expr(tree[1], context, output)
         if res[0] == "cons" and res[1] == "+":
             if get_name:
-                return ("name", (), res[2][1])
-            return res[2][1]
+                return ("name", (), res[2][0])
+            return res[2][0]
         raise Exception("Attempted to star an invalid object")
     
     elif tree[0] == "type":
@@ -848,7 +848,7 @@ else:
         with open(filename, "w") as code_file:
             code_file.write(conv_to_code(tree_code))
             
-        print("Tree: ", tree_code)
+        # print("Tree: ", tree_code)
         # print("--==EXECUTING==--")
         output, errors, final_context = execute(tree_code)
         # print("--==FINISHED==--")
