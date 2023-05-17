@@ -7,7 +7,7 @@ Created on Mon May 15 04:57:22 2023
 import sys, random
 
 split_ops = "$+-*/%=?:{([,>&|!<~._\\"
-ops = "$+-*/%=?:,><&|!~_.\\"
+ops = "+-*/%=?:,>&|!~_.\\"
 digs = "0123456789"
 
 
@@ -44,7 +44,7 @@ def tokenise(source, file=True):
                     tokens.append(("int", int_token))
             except:
                 pass
-        elif token in ops:
+        elif token in ops + "$<":
             if len(tokens) > 0 and tokens[-1] == ("?", "?") and token == "?":
                 tokens[-1] = ("rand", "??")
             else:
@@ -65,7 +65,7 @@ def tokenise(source, file=True):
             elif i == "[":
                 brackets += 1
                 bracket = "["
-            elif i in digs+ops:
+            elif i in digs+ops+"$<":
                 token += i
             elif i in ")}]":
                 raise Exception("Mismatched bracket " + i)
@@ -625,6 +625,8 @@ def eval_expr(tree, context, output, get_name = False):
                         temp_context[res[1]] = eval_expr(params[i], context, output)
                 return eval_expr(expr, temp_context, output, get_name)
             elif len(params) < len(param_names):
+                if get_name:
+                    return ("name", (), ("func", param_names[len(params):], ("part_f", param_names[:len(params)], params, expr)))
                 return ("func", param_names[len(params):], ("part_f", param_names[:len(params)], params, expr))
             else:
                 raise Exception("Too many arguments for function")
