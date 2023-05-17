@@ -20,7 +20,7 @@ This is part of the 69420 class of languages, with the original available here: 
     - [2.4 - Basic Assignment](#24---basic-assignment)
     - [2.5 - Evaluation in 0cam1](#25---evaluation-in-0cam1)
     - [2.6 - Functions](#26---functions)
-  - [Section 3: Advanced Structures](#section-3-advanced-structures)
+  - [Section 3: Intermediate Structures](#section-3-advanced-structures)
     - [3.1 - Conditional Execution](#31---conditional-execution)
     - [3.2 - Anonymous Functions](#32---anonymous-functions)
     - [3.3 - Trivialisation](#33---trivialisation)
@@ -30,7 +30,7 @@ This is part of the 69420 class of languages, with the original available here: 
     - [4.2 - Decimal to Binary Converter](#42---decimal-to-binary-converter)
 
 ## Section 1: The Principles behind 0cam1
-0cam1 is designed with one core aim, and one core principle. Understanding these will make understanding the way the language functions much easier. Firstly, 0cam1 aims to give programmers the neat simplicity of functional programming, whilst giving them the power of mutability. Secondly, 0cam1 is as lazy as possible: values are only updated when they are absolutely needed. 
+0cam1 is designed with one core aim, and one core principle. Understanding these will make understanding the way the language functions much easier. Firstly, 0cam1 aims to give programmers the neat simplicity of functional programming, whilst giving them the power of mutability. Secondly, 0cam1 is as lazy as possible: values are only updated when they are absolutely needed. 0cam1 is also designed to be as logically consist and robust as possible, with all possible types being treated as equally as possible. Additionally, anything that does not have a return type is accessed through assignments, representing the fact that it does not return anything. 
 
 ## Section 2: Basic Syntax
 In this section we will cover the basic syntax of 0cam1. 
@@ -40,7 +40,7 @@ In this section we will cover the basic syntax of 0cam1.
 ```
 1, 2, 3 = 4,
 ```
-Now let's understand basic assignment. 
+If variable names are integers, then how are character treated? Well, they are treated as...
 <br>
 <br>
 <br>
@@ -48,14 +48,15 @@ Now let's understand basic assignment.
 ### 2.2 - Comments
 0cam1 ignores all characters which are not explicitly used by the language. This means that comments can easily be written using characters no used by 0cam1, which includes all latin letters. The following is an example of valid code using comments:
 ```
-one1 =equals 2twenty0 This is valid code and is equivalent to, 1=20,  
+one19nine =equals 2twenty1one This is valid code and is equivalent to, 19=21,  
 ```
 <br>
 <br>
 <br>
 
 ### 2.3 - Basic Expressions
-0cam1 supports a variety of integer operations, including addition via `+`, multiplication via `*`, subtraction via `-`, integer division via `/`, modulo via `%`, bitwise and via `&`, and bitwise or via `|`. 
+0cam1 supports a variety of integer operations, including addition via `+`, multiplication via `*`, subtraction via `-`, integer division via `/`, backwards integer division via `\`, modulo via `%`, bitwise and via `&`, and bitwise or via `|`. 
+Now let's understand basic assignment. 
 <br>
 <br>
 <br>
@@ -140,7 +141,7 @@ This so far is not too useful, but with a few additional structures which we wil
 <br>
 <br>
 
-## Section 3: Advanced Structures
+## Section 3: Intermediate Structures
 In this section we will cover the more advanced structures used to make useful 0cam1 programs. 
 
 ### 3.1 - Conditional Execution
@@ -209,11 +210,11 @@ Which gives the output:
 <br>
 
 ### 3.3 - Trivialisation
-What happens when we want to reset a value to its value before any assignments? The answer is we can use trivialisation to trivially reset a value to its trivial value. The trivialisation function is trivially the empty set, and can be trivially applied to multiple names at once. Trivialisation is the one function that does not trivially evaluate names through the dependency chain, instead clearing the exact name of the given integer. Due to this, trivialisation trivially cannot accept expressions as arguments, and only accepts direct integers, as trivially shown by the following:
+What happens when we want to reset a value to its value before any assignments? The answer is we can use trivialisation to trivially reset a name to its trivial value. The trivialisation namespace is trivially the empty set. Assigning to the trivialisation operator trivially trivialises the name, such as in the following code:
 ```
 1 = 2, 2 = 3, 3 = 4, 5 = 7, 6 = 8, 4 = 9, Made a bit of a mess, and want to clear it up
 1, 2, 3, 4, 5, 6,                         Pre trivialisation
-{} 1 3 5,                                 Trivialisation
+{} = 1 3 5,                               Trivialisation
 1, 2, 3, 4, 5, 6,                         Post trivialisation
 ```
 Trivially returning:
@@ -236,80 +237,78 @@ Due to the fact the trivialisation alters the mappings on the base execution lay
 <br>
 <br>
 
-### 3.4 - Character Output
-Sometimes we may wish to abandon integers for characters. In such rare cases, the character output function `$` can help us, converting integers into their relevant characters, and outputting the result. Note that similar to trivialisation, `$` can receive multiple parameters which are all printed as one string, and is also restricted to use on a line by itself, and not within functions. Here is some basic code using `$`:
+### 3.4 - Random Numbers
+0cam1 features the inbuilt `??` function for generating random numbers. It can be called with either 0, 1, or 2 parameters. When called with 0 parameters, it returns a random integer from 0 to 1. When called with 1 parameter, it returns a random integer from 0 to the first parameter. When called with 2 parameters, it returns a random integer between the two parameters. Here is an example:
 ```
-$ 65, $ 66 67,
+??, ?? 100, ?? -100 -10,
 ```
-Which prints:
+Could evaluate to
 ```
-A
-BC
+1
+64
+-72
 ```
-<br>
-<br>
-<br>
 
-## Section 4: Example Code
+## Section 4: Advanced Structures
+In this section, we'll cover the most advanced 0cam1 structures. 
+
+## Section 5: Example Code
 This section is dedicated to code showing the power and usefulness of 0cam1. 
 
-### 4.1 - FizzBuzz
+### 5.1 - FizzBuzz
 ```
-997 998 = (998 - 9) ? 998 + 48: (998 - 35) ? 998 + 55 : 998 + 61,   A converter to and from ASCII
-1001 1002 1003 = 1003 ? 1002 % 62 : 1001 (1002 / 62) (1003 - 1),    Extracts a single char from a int string representation
-1004 1005 = 1005 ? 0 : (1005 % 10) + 62 * (1004 (1005 / 10)),       Converts a number into a int string representation
+Print out the final returned string as well
+$ = 
+Convert a number into a ASCII decimal string
+(997 998 999 ~ 998 ? 999 : 997 (998 / 10) ((998 % 10 + 48) + 999).
+FizzBuzz
+1007 1009 ~ (1009 % 3) ? 
+((1009 % 5) ?  FizzBuzz 70+105+122+122+66+117+122+122+[] : Fizz 70+105+122+122+[]) : 
+(1009 % 5) ? Buzz 66+117+122+122+[] : 997 1009 [].
+Iterate FizzBuzz
+1013 1017 1019 ~ (1019 - 1017) ? 1007 1019 : ($ ~ (1007 1017). 1013 (1017 + 1) 1019).
 
-Fizz buzz
-1007 1009 = (1009 % 3) ? ((1009 % 5) ?  2840715 + 14776336 * 3747899 : 3747899) : (1009 % 5) ? 2840715 : 1004 1009,
-101 1013 = 997 (1001 100 1013),                                     A helper function to make the code neater
-
-Calculate and print the results
-100 = 1007 1,
-$ (101 7) (101 6) (101 5) (101 4) (101 3) (101 2) (101 1) (101 0),
-100 = 1007 2,
-$ (101 7) (101 6) (101 5) (101 4) (101 3) (101 2) (101 1) (101 0),
-100 = 1007 3,
-$ (101 7) (101 6) (101 5) (101 4) (101 3) (101 2) (101 1) (101 0),
-100 = 1007 4,
-$ (101 7) (101 6) (101 5) (101 4) (101 3) (101 2) (101 1) (101 0),
-100 = 1007 5,
-$ (101 7) (101 6) (101 5) (101 4) (101 3) (101 2) (101 1) (101 0),
-100 = 1007 6,
-$ (101 7) (101 6) (101 5) (101 4) (101 3) (101 2) (101 1) (101 0),
-100 = 1007 7,
-$ (101 7) (101 6) (101 5) (101 4) (101 3) (101 2) (101 1) (101 0),
-100 = 1007 9,
-$ (101 7) (101 6) (101 5) (101 4) (101 3) (101 2) (101 1) (101 0),
-100 = 1007 10,
-$ (101 7) (101 6) (101 5) (101 4) (101 3) (101 2) (101 1) (101 0),
-100 = 1007 11,
-$ (101 7) (101 6) (101 5) (101 4) (101 3) (101 2) (101 1) (101 0),
-100 = 1007 12,
-$ (101 7) (101 6) (101 5) (101 4) (101 3) (101 2) (101 1) (101 0),
-100 = 1007 13,
-$ (101 7) (101 6) (101 5) (101 4) (101 3) (101 2) (101 1) (101 0),
-100 = 1007 14,
-$ (101 7) (101 6) (101 5) (101 4) (101 3) (101 2) (101 1) (101 0),
-100 = 1007 15,
-$ (101 7) (101 6) (101 5) (101 4) (101 3) (101 2) (101 1) (101 0),
+Ask how many iterations the user wants
+$ ~ (72+111+119+32+102+97+114+32+116+111+32+99+111+117+110+116+63+32+[]).
+Respond
+(1013 1 <)),
 ```
 <br>
 <br>
 <br>
 
-### 4.2 - Decimal to Binary Converter
+### 5.2 - Decimal to Binary Converter
 ```
-997 998 = 998 ? 0 : 10 * (997 (998 / 2)) + 998 % 2, Converts decimal to binary
+$ = (997 999 998 ~ 998 ? 999 : 997 ((998 % 2 + 48) + 999) (998 / 2). Converts decimal to binary
 
 Several test cases to show it working
-997 5, 
-997 10, 
-997 13, 
-997 25, 
-997 47, 
-997 100, 
-997 1000, 
-997 10000, 
-997 100000, 
-997 9999999,
+$ ~ (73+110+112+117+116+[]).
+(997 [] <)), 
+```
+<br>
+<br>
+<br>
+
+### 5.3 - Bubblesort
+```
+Bubblesort
+9997 9998 = (
+ A single bubble sort pass
+ 1013 1017 ~ (1017 ! [] > [] ! + > 
+  (-(1017) ! [] > 1017 ! + > 
+   (*1017 - *(-(1017))) ?  
+   *1017 + (1013 (*(-(1017)) + -(-(1017)))) :
+   *(-(1017)) + (1013 (*1017 + -(-(1017)))))
+ ).
+ Getting the length of the list
+ 1023 1027 ~ (1027 ! [] > 0 ! + > 1 + (1023 (-(1027)))).
+ Repeating the pass a given number of times
+ 1033 1037 1039 ~ (1039 ? 1037 : 1013 (1033 1037 (1039 - 1))).
+ Repeating the pass for the number of items in the list
+ 1033 9998 (1023 9998)
+),
+Some test cases to show it works
+9997 (1 + 3 + 5 + 4 + 2 + []),
+9997 (5 + 4 + 3 + 2 + 1 + []),
+9997 (4 + 2 + 3 + 5 + 1 + []),
 ```
