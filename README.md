@@ -300,6 +300,25 @@ Which could evalute to:
 <br>
 <br>
 
+### 3.5 - Unit
+Sometimes we want to have a dummy object that has no inherent meaning. To achieve this we use `()`, aka unit. `()` can be used for parameter names, and has the effect of discarding the parameter by not assigning it into the namespace. `()` can also be used as an input when no input is required. Additionally, `()` combined with anything else by an operator returns `()`, `()` returns `()` when called as a function with anything, `()` returns `()` when compared, `()` returns `()` if it fails a pattern match, and `()` will print `()` when converted to a string. This is all shown by the following:
+```
+5 () = 3, 5 2, 5 (), () + 2, () + 5, () 1 2, () ? 1 : 2, () ! 1 > 2, $ = (),
+```
+Printing:
+```
+3
+3
+()
+()
+()
+()
+()
+()
+```
+<br>
+<br>
+
 ## Section 4: Advanced Structures
 In this section, we'll cover the most advanced 0cam1 structures. 
 ### 4.1 - Types
@@ -359,21 +378,22 @@ Which gives:
 <br>
 <br>
 
-### 4.3 - Unit
-Sometimes we want to have a dummy object that has no inherent meaning. To achieve this we use `()`, aka unit. `()` can be used for parameter names, and has the effect of discarding the parameter by not assigning it into the namespace. `()` can also be used as an input when no input is required. Additionally, `()` combined with anything else by an operator returns `()`, `()` returns `()` when called as a function with anything, `()` returns `()` when compared, `()` returns `()` if it fails a pattern match, and `()` will print `()` when converted to a string. This is all shown by the following:
+### 4.3 - Strict Evaluation
+We may notice that constructors in 0cam1 have a problem, namely that they are by default lazy. This presents an issue, where objects constructed within a scope can lose all meaning once passed out of the scope. To fix this we can use the strict evaluation operators `!?` and `!!`. `!?` is shallow strict evaluation, it strictly evaluates the given value, but if the value has a constructor in it, the constructor's arguments are not evaluated. `!!` is deep strict evaluation, all of the nested constructors within are evaluated. These can also be used for regular assignments, as shown by the following code:
 ```
-5 () = 3, 5 2, 5 (), () + 2, () + 5, () 1 2, () ? 1 : 2, () ! 1 > 2, $ = (),
+_ = 10011 10012,10011 (* ((10011 (1 + 2)) + (10011 (-(4 + []))) + [])),
+10011 (!?(* ((10011 (1 + 2)) + (10011 (-(4 + []))) + []))),
+10011 (!!(* ((10011 (1 + 2)) + (10011 (-(4 + []))) + []))),
+3 = !? (12 + (13 + 2)), 3,
+3 = !! (12 + (13 + 3)), 3,
 ```
-Printing:
+Which returns:
 ```
-3
-3
-()
-()
-()
-()
-()
-()
+10011 *((10011 (1+2)+(10011 -((4+[]))+[])))
+10011 10011 (1+2)
+10011 10011 3
+27
+52
 ```
 <br>
 <br>
@@ -472,6 +492,8 @@ Which results in:
 101 103 > 101+1+- 103
 -30
 ```
+<br>
+<br>
 
 ## Section 5: Example Code
 This section is dedicated to code showing the power and usefulness of 0cam1. 
