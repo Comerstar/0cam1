@@ -87,7 +87,10 @@ We can see the results of our assignments by writing expressions to evaluate the
 ```
 Has the following output:
 ```
-6, 6, 3, 7
+6
+6
+3
+7
 ```
 This makes sense, `'1'` has the expression `2` assigned to it, and `'2'` has the expression `3 + 3` assigned to it, whilst `'3'` has not been altered. Therefore, when evaluating `1`, it evaluates the expression `2`. which evaluates to `3 + 3`, ultimately giving out answer of `6`. 
 
