@@ -605,7 +605,7 @@ def eval_expr(tree, context, output, get_name = False):
                     return ("int", random.randint(0, res[1]))
                 elif len(params) == 2:
                     res1 = eval_expr(params[0], context, output)
-                    res2 = eval_expr(params[0], context, output)
+                    res2 = eval_expr(params[1], context, output)
                     if res1[0] != "int":
                         raise Exception("Attempted to bind random with non-int")
                     if res2[0] != "int":
