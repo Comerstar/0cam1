@@ -47,6 +47,10 @@ def tokenise(source, file=True):
         elif token in ops + "$<":
             if len(tokens) > 0 and tokens[-1] == ("?", "?") and token == "?":
                 tokens[-1] = ("rand", "??")
+            elif len(tokens) > 0 and tokens[-1] == ("!", "!") and token == "?":
+                tokens[-1] = ("!?", "!?")
+            elif len(tokens) > 0 and tokens[-1] == ("!", "!") and token == "!":
+                tokens[-1] = ("!!", "!!")
             else:
                 tokens.append((token, token))
         token = ""
@@ -129,7 +133,7 @@ def conv_tokens_to_string(tokens):
         return "(" + conv_tokens_to_string(tokens[1]) + ")"
     elif tokens[0] in ["$", "+", "-", "*", "/", "%", "=", "?", ":", "{", "(", 
                        "[", ",", ">", "&", "|", "!", "<", "~", ".", "_", "\\", 
-                       "unit", "empty", "triv"]:
+                       "unit", "empty", "triv", "?!", "!!"]:
         return str(tokens[1])
     raise Exception("MISSING CASE IN CONV TOKENS TO STRING " + str(tokens[0]))
 
@@ -265,6 +269,10 @@ def syntax_tree(tokens, state):
                         return ("neg", syntax_tree(tokens[1:], "expr"))
                     elif tokens[0][0] == "*":
                         return ("star", syntax_tree(tokens[1:], "expr"))
+                    elif tokens[0][0] == "!?":
+                        return ("!?", syntax_tree(tokens[1:], "expr"))
+                    elif tokens[0][0] == "!!":
+                        return ("!!", syntax_tree(tokens[1:], "expr"))
                 evaluated = []
                 for i in tokens:
                     evaluated.append(syntax_tree([i], "expr"))
@@ -335,12 +343,16 @@ def conv_to_code(value, direct = True):
         return conv_to_code(value[1])
     elif value[0] == "rand":
         return "??"
+    elif value[0] == "!?":
+        return "!?(" + conv_to_code(value[1]) + ")"
+    elif value[0] == "!!":
+        return "!!(" + conv_to_code(value[1]) + ")"
     elif value[0] in "+-/*%&|\\":
-        return conv_to_code(value[1]) + value[0] + conv_to_code(value[2])
+        return "(" + conv_to_code(value[1]) + value[0] + conv_to_code(value[2]) + ")"
     elif value[0] == "neg":
-        return "- " + conv_to_code(value[1])
+        return "-(" + conv_to_code(value[1]) + ")"
     elif value[0] == "star":
-        return "* " + conv_to_code(value[1])
+        return "*(" + conv_to_code(value[1]) + ")"
     elif value[0] in "<$":
         return value[0]
     elif value[0] == "::":
@@ -365,6 +377,24 @@ def conv_to_code(value, direct = True):
         return conv_to_code(value[1]) + "?" + conv_to_code(value[2]) + ":" + conv_to_code(value[3])
     elif value[0] == "part_f":
         return "(" + conv_to_code(value[1]) + ") " + " ".join([conv_to_code(i) for i in value[2]])
+    elif value[0] == "func":
+        output = ""
+        for i in value[1]:
+            output += conv_to_string(i) + " "
+        return output + "> " + conv_to_code(value[2])
+    elif value[0] == "cons":
+        if value[1] in ["+", []]:
+            return conv_list_to_string(value)
+        output = ""
+        for i in value[2]:
+            output += conv_to_code(i) + " "
+        output = output[:-1]
+        return str(value[1]) + " " + output
+    elif value[0] == "type":
+        output = ""
+        for i in value[1]:
+            output += conv_to_string(i) + " "
+        return output + "!"
     raise Exception("MISSING CASE IN CONV_CODE " + str(value))
 
 
@@ -462,6 +492,10 @@ def assign_to_scope(tree, context, output):
                 raise Exception("Attempted to assign to non-int")
             if tree[2][0] == "int":
                 context[res[1]] = tree[2]
+            elif tree[2][0] == "!?":
+                context[res[1]] = eval_expr(tree[2], context, output)
+            elif tree[2][0] == "!!":
+                context[res[1]] = eval_expr(tree[2], context, output, strict = True)
             else:
                 context[res[1]] = ("intf", tree[2])
                 
@@ -592,8 +626,8 @@ def flatten_partial_cons(res):
 # ("func", param_names, expr)
 # ("type", params, base) a type constructor
 # ("cons", name, params) a constructed object
-def eval_expr(tree, context, output, get_name = False):
-    #Evaluate a function call
+def eval_expr(tree, context, output, get_name = False, strict = False):
+    # Evaluate a function call
     if tree[0] == "func_call":
         name = tree[1]
         params = tree[2]
@@ -636,8 +670,8 @@ def eval_expr(tree, context, output, get_name = False):
                     if res[0] != ():
                         if res[0] != "int":
                             raise Exception("Attempted to assign to non-int")
-                        temp_context[res[1]] = eval_expr(params[i], context, output)
-                return eval_expr(expr, temp_context, output, get_name)
+                        temp_context[res[1]] = eval_expr(params[i], context, output, strict = strict)
+                return eval_expr(expr, temp_context, output, get_name, strict)
             elif len(params) < len(param_names):
                 if get_name:
                     return ("name", (), ("func", param_names[len(params):], ("part_f", param_names[:len(params)], params, expr)))
@@ -648,14 +682,34 @@ def eval_expr(tree, context, output, get_name = False):
             param_names = res[1]
             if len(params) == len(param_names):
                 if res[2] == ():
-                    return ("cons", func_name, params)
+                    eval_params = []
+                    for i in params:
+                        if i[0] == "!?":
+                            eval_params.append(eval_expr(i[1], context, output, strict = strict))
+                        elif i[0] == "!!":
+                            eval_params.append(eval_expr(i[1], context, output, strict = True))
+                        elif strict:
+                            eval_params.append(eval_expr(i, context, output, strict = strict))
+                        else:
+                            eval_params.append(i)
+                    return ("cons", func_name, eval_params)
                 else:
                     name, part_params = flatten_partial_cons(res)
                     return ("cons", name, part_params + params)
             elif len(params) < len(param_names):
+                eval_params = []
+                for i in params:
+                    if i[0] == "!?":
+                        eval_params.append(eval_expr(i[1], context, output, strict = strict))
+                    elif i[0] == "!!":
+                        eval_params.append(eval_expr(i[1], context, output, strict = True))
+                    elif strict:
+                        eval_params.append(eval_expr(i, context, output, strict = strict))
+                    else:
+                        eval_params.append(i)
                 if get_name:
-                    return ("name", (), ("type", param_names[len(params):], ("part_c", func_name, res, params)))
-                return ("type", param_names[len(params):], ("part_c", func_name, res, params))
+                    return ("name", (), ("type", param_names[len(params):], ("part_c", func_name, res, eval_params)))
+                return ("type", param_names[len(params):], ("part_c", func_name, res, eval_params))
             else:
                 raise Exception("Too many arguments for constructor")
         elif res[0] == "cons":
@@ -683,13 +737,13 @@ def eval_expr(tree, context, output, get_name = False):
                 if res[0] != "int":
                     raise Exception("Attempted to assign to non-int")
                 temp_context[res[1]] = eval_expr(params[i], context, output)
-        return eval_expr(expr, temp_context, output, get_name)
+        return eval_expr(expr, temp_context, output, get_name, strict)
     
     elif tree[0] == "scope_a":
         temp_context = context.copy()
         for i in tree[1]:
             assign_to_scope(i, temp_context, output)
-        return eval_expr(tree[2], temp_context, output, get_name)
+        return eval_expr(tree[2], temp_context, output, get_name, strict)
     
     elif tree[0] == "pattern":
         val = eval_expr(tree[1], context, output)
@@ -700,7 +754,7 @@ def eval_expr(tree, context, output, get_name = False):
                 raise Exception ("Attempted to match a non-match case")
             matched, new_context = match_case(val, i[1], context, output)
             if matched:
-                return eval_expr(i[2], new_context, output, get_name)
+                return eval_expr(i[2], new_context, output, get_name, strict)
         if val[0] == ():
             if get_name:
                 return ("name", (), ((), ()))
@@ -709,13 +763,13 @@ def eval_expr(tree, context, output, get_name = False):
     
     elif tree[0] == "a_func":
         if tree[1][0] != "params":
-            raise Exception("Attempted to invalid anonymous function")
+            raise Exception("Attempted to execute invalid anonymous function")
         param_names = tree[1][1];
         eval_names = []
         for i in param_names:
             res = eval_expr(i, context, output)
-            if res[0] == "func":
-                raise Exception("Attempted to assign to funtion")
+            if res[0] != "int":
+                raise Exception("Attempted to assign to non-int")
             eval_names.append(res)
         if get_name:
             return ("name", (), ("func", eval_names, tree[2]))
@@ -726,9 +780,9 @@ def eval_expr(tree, context, output, get_name = False):
         res = eval_expr(cond, context, output)
         if res[0] == "int":
             if res[1] <= 0:
-                return eval_expr(tree[2], context, output, get_name)
+                return eval_expr(tree[2], context, output, get_name, strict)
             else:
-                return eval_expr(tree[3], context, output, get_name)
+                return eval_expr(tree[3], context, output, get_name, strict)
         elif res[0] == ():
             if get_name:
                 return ("name", (), ((), ()))
@@ -737,8 +791,8 @@ def eval_expr(tree, context, output, get_name = False):
             raise Exception("Attempted to compare to a non-int")
         
     elif tree[0] in "+-/*%&|\\":
-        res1 = eval_expr(tree[1], context, output)
-        res2 = eval_expr(tree[2], context, output)
+        res1 = eval_expr(tree[1], context, output, strict = strict)
+        res2 = eval_expr(tree[2], context, output, strict = strict)
         if res1[0] == res2[0] == "int":
             res = None
             if tree[0] == "+":
@@ -757,7 +811,7 @@ def eval_expr(tree, context, output, get_name = False):
                 res = res1[1] | res2[1]
             elif tree[0] == "\\":
                 res = res2[1] // res1[1]
-            return eval_expr(("int", res), context, output, get_name)
+            return eval_expr(("int", res), context, output, get_name, strict)
         elif res1[0] == "func" and res2[0] == "func":
             if get_name:
                 return ("name", (), ("func", res1[1] + res2[1], (tree[0], res1[2], res2[2])))
@@ -785,9 +839,9 @@ def eval_expr(tree, context, output, get_name = False):
             raise Exception("Invalid operator combination " + str(res1[0]) + " " + str(res2[0]))
     
     elif tree[0] == "neg":
-        res = eval_expr(tree[1], context, output)
+        res = eval_expr(tree[1], context, output, strict = strict)
         if res[0] == "int":
-            return eval_expr(("int", -res[1]), context, output, get_name)
+            return eval_expr(("int", -res[1]), context, output, get_name, strict)
         elif res[0] == "cons" and res[1] == "+":
             if get_name:
                 return ("name", (), res[2][1])
@@ -799,7 +853,7 @@ def eval_expr(tree, context, output, get_name = False):
         raise Exception("Attempted to negate an invalid object")
     
     elif tree[0] == "star":
-        res = eval_expr(tree[1], context, output)
+        res = eval_expr(tree[1], context, output, strict = strict)
         if res[0] == "cons" and res[1] == "+":
             if get_name:
                 return ("name", (), res[2][0])
@@ -810,6 +864,12 @@ def eval_expr(tree, context, output, get_name = False):
             return ((), ())
         raise Exception("Attempted to star an invalid object")
     
+    elif tree[0] == "!?":
+        return eval_expr(tree[1], context, output, get_name, strict)
+    
+    elif tree[0] == "!!":
+        return eval_expr(tree[1], context, output, get_name, True)
+    
     elif tree[0] == "type":
         if get_name:
             return ("name", (), tree)
@@ -819,7 +879,7 @@ def eval_expr(tree, context, output, get_name = False):
         if tree[1] in context.keys():
             val = context[tree[1]]
             if val[0] == "int" or val[0] == "intf":
-                return eval_expr(val, context, output, get_name)
+                return eval_expr(val, context, output, get_name, strict)
             elif get_name == False:
                 if val[0] == "type" and val[1] == []:
                     return ("cons", tree[1], [])
@@ -832,7 +892,7 @@ def eval_expr(tree, context, output, get_name = False):
             return ("int", tree[1])
         
     elif tree[0] == "intf":
-        return eval_expr(tree[1], context, output, get_name)
+        return eval_expr(tree[1], context, output, get_name, strict)
     
     elif tree[0] == "empty":
         if get_name:
@@ -863,6 +923,18 @@ def eval_expr(tree, context, output, get_name = False):
         if get_name:
             return("name", (), ((), ()))
         return ((), ())
+    
+    elif tree[0] == "cons":
+        if strict:
+            eval_params = []
+            for i in tree[2]:
+                eval_params.append(eval_expr(i, context, output, strict = True))
+            if get_name:
+                return ("name", (), (tree[0], tree[1], eval_params))
+            return (tree[0], tree[1], eval_params)
+        if get_name:
+            return ("name", (), tree)
+        return tree
     
     else:
         raise Exception("Invalid expression type " + str(tree[0]))
