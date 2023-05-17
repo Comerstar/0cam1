@@ -491,13 +491,13 @@ This section is dedicated to code showing the power and usefulness of 0cam1.
 Print out the final returned string as well
 $ = 
 Convert a number into a ASCII decimal string
-(997 998 999 ~ 998 ? 999 : 997 (998 / 10) ((998 % 10 + 48) + 999).
+(997 998 999 ~ (998 ? 999 : 997 (998 / 10) ((998 % 10 + 48) + 999)).
 FizzBuzz
-1007 1009 ~ (1009 % 3) ? 
+1007 1009 ~ ((1009 % 3) ? 
 ((1009 % 5) ?  FizzBuzz 70+105+122+122+66+117+122+122+[] : Fizz 70+105+122+122+[]) : 
-(1009 % 5) ? Buzz 66+117+122+122+[] : 997 1009 [].
+(1009 % 5) ? Buzz 66+117+122+122+[] : 997 1009 []).
 Iterate FizzBuzz
-1013 1017 1019 ~ (1019 - 1017) ? 1007 1019 : ($ ~ (1007 1017). 1013 (1017 + 1) 1019).
+1013 1017 1019 ~ ((1019 - 1017) ? 1007 1019 : ($ ~ (1007 1017). 1013 (1017 + 1) 1019)).
 
 Ask how many iterations the user wants
 $ ~ (72+111+119+32+102+97+114+32+116+111+32+99+111+117+110+116+63+32+[]).
@@ -510,7 +510,7 @@ Respond
 
 ### 5.2 - Decimal to Binary Converter
 ```
-$ = (997 999 998 ~ 998 ? 999 : 997 ((998 % 2 + 48) + 999) (998 / 2). Converts decimal to binary
+$ = (997 999 998 ~ (998 ? 999 : 997 ((998 % 2 + 48) + 999) (998 / 2)). Converts decimal to binary
 
 Several test cases to show it working
 $ ~ (73+110+112+117+116+[]).
