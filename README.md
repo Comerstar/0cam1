@@ -100,7 +100,7 @@ Has the following output:
 ```
 15
 ```
-Note that care must be taken to avoid creating infinite loops. The line `1=1` will never terminate. 
+Note that care must be taken to avoid creating infinite loops. The line `1=1, 1` will never terminate. 
 <br>
 <br>
 <br>
