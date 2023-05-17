@@ -298,7 +298,7 @@ Note that this can be used for random name assignment, as with the following:
 ```
 ?? = 5, 0, 1
 ```
-Which could evalute
+Which could evalute to:
 ```
 0
 5
