@@ -12,6 +12,8 @@ This is part of the 69420 class of languages, with the original available here: 
 > **__NOTE:__** All code examples assume no prior assignment. Be aware that the assignment of values will significantly impact the result of the program. Throughout the guide, `'1'` will be the notation used to represent numerical names. 
 
 ## Table of Contents
+ - [Welcome to the world of 0cam1](#Welcome-to-the-world-of-0cam1)
+  - [Table-of-Contents](#table-of-contents)
   - [Section 1: The Principles behind 0cam1](#section-1-the-principles-behind-0cam1)
   - [Section 2: Basic Syntax](#section-2-basic-syntax)
     - [2.1 - Basic Rules](#21---basic-rules)
@@ -19,16 +21,26 @@ This is part of the 69420 class of languages, with the original available here: 
     - [2.3 - Basic Expressions](#23---basic-expressions)
     - [2.4 - Basic Assignment](#24---basic-assignment)
     - [2.5 - Evaluation in 0cam1](#25---evaluation-in-0cam1)
-    - [2.6 - Functions](#26---functions)
+    - [2.6 Name Evaluation](#26---name-evaluation)
+    - [2.7 - Functions](#27---functions)
   - [Section 3: Intermediate Structures](#section-3-intermediate-structures)
     - [3.1 - Conditional Execution](#31---conditional-execution)
     - [3.2 - Anonymous Functions](#32---anonymous-functions)
     - [3.3 - Trivialisation](#33---trivialisation)
     - [3.4 - Random Numbers](#34---random-numbers)
   - [Section 4: Advanced Structures](#section-4-advanced-structures)
+    - [4.1 - Types](#41---types)
+    - [4.2 - Pattern Matching](#42---pattern-matching)
+    - [4.3 - Unit](#43---unit)
+    - [4.4 - Lists](#44---lists)
+    - [4.5 - Character Output](#45---character-output)
+    - [4.6 - Integer Input](#46---integer-input)
+    - [4.7 - Temporary Assignments and Side Effects](#47---temporary-assignemnts-and-side-effects)
+    - [4.8 - Function Operators](#48---function-operators)
   - [Section 5: Example Code](#section-5-example-code)
     - [5.1 - FizzBuzz](#51---fizzbuzz)
     - [5.2 - Decimal to Binary Converter](#52---decimal-to-binary-converter)
+    - [5.3 - Bubblesort](#53---bubblesort)
 
 ## Section 1: The Principles behind 0cam1
 0cam1 is designed with one core aim, and one core principle. Understanding these will make understanding the way the language functions much easier. Firstly, 0cam1 aims to give programmers the neat simplicity of functional programming, whilst giving them the power of mutability. Secondly, 0cam1 is as lazy as possible: values are only updated when they are absolutely needed. 0cam1 is also designed to be as logically consist and robust as possible, with all possible types being treated as equally as possible. Additionally, anything that does not have a return type is accessed through assignments, representing the fact that it does not return anything. 
@@ -237,7 +249,7 @@ Which gives the output:
 <br>
 
 ### 3.3 - Trivialisation
-What happens when we want to reset a value to its value before any assignments? The answer is we can use trivialisation to trivially reset a name to its trivial value. The trivialisation namespace is trivially the empty set. Assigning to the trivialisation operator trivially trivialises the name, such as in the following code:
+What happens when we want to reset a value to its value before any assignments? The answer is we can use trivialisation to trivially reset a name to its trivial value. The trivialisation namespace is trivially the empty set. Assigning to trivialisation trivially trivialises the name, and can be trivially done with multiple names are once, such as in the following code:
 ```
 1 = 2, 2 = 3, 3 = 4, 5 = 7, 6 = 8, 4 = 9, Made a bit of a mess, and want to clear it up
 1, 2, 3, 4, 5, 6,                         Pre trivialisation
@@ -290,7 +302,7 @@ Which could evalute
 
 ## Section 4: Advanced Structures
 In this section, we'll cover the most advanced 0cam1 structures. 
-### Section 4.1: Types
+### 4.1 - Types
 0cam1 supports types. To create a type, assign to \_, akin to the following:
 ```
 _ = 123 ! 124 125 126,
@@ -333,7 +345,7 @@ We may wonder what are types useful for, since we currently cannot manipulate th
 <br>
 <br>
 
-### Section 4.2 Pattern Matching
+### 4.2 - Pattern Matching
 Pattern matching allows us to usefully check what types our values have, and extract their constructor values. The pattern matching is done using `!`, which also acts as the separator between the various statements: the first statement is the value being comapred to, the rest are match cases. A match case consists of a thing to match, followed by `>` and the expression to return if the case is matched. Pattern matching matches types, matching the constructors, and passed in values. For example, if we have a type `_ = 7331 23 24`, then `(7331 1 2)  ! 7331 1 > 0 ! 7331 > 2` returns `0`, and `(7331 2 2)  ! 7331 1 > 0 ! 7331 > 2` returns `2`. In order to access the parameters passed ot the constructors, unmatched parameters are written into the match's context using the constructor's parameter names. So `(7331 1 2)  ! 7331 1 > 23 ! 7331 > 23` returns `23` since the `1` is matched, and `(7331 2 2)  ! 7331 1 > 23 ! 7331 > 23` returns `2` since the `2` is not. This allows us to make some brief full example code:
 ```
 _ = 123 124 125! 236,
@@ -349,7 +361,7 @@ Which gives:
 <br>
 <br>
 
-### Section 4.3 Unit
+### 4.3 - Unit
 Sometimes we want to have a dummy object that has no inherent meaning. To achieve this we use `()`, aka unit. `()` can be used for parameter names, and has the effect of discarding the parameter by not assigning it into the namespace. `()` can also be used as an input when no input is required. Additionally, `()` combined with anything else by an operator return `()`. This is all shown by the following:
 ```
 5 () = 3, 5 2, 5 (), () + 2, () + 5,
@@ -365,7 +377,7 @@ Printing:
 <br>
 <br>
 
-### Section 4.4 Lists
+### 4.4 - Lists
 0cam1 has an inbuilt list type. It has two associated constructors, `+` and `[]`. `[]` returns the empty list, and `h+t` conses `h` to `t`. This means that we can easily build lists as shown by the following:
 ```
 1 + 2 + 3 + [],
@@ -388,10 +400,81 @@ Resulting in:
 3
 ```
 We can pattern match with lists as with any other data type, allowing us to rewrite our length function from earlier as:
+```
+997 998 = 998 ! [] > 0 ! + > 1 + 997 (-(998)),
+997 [], 997 (1 + 2 + 3 + []), +,
+```
+Which gives:
+```
+0
+3
+() () !
+```
+Note that `+`'s two parameters are units, and therefore do not alter the namespace when matched to. 
+<br>
+<br>
+<br>
 
+### 4.5 - Character Output
+We can output characters by writing to `$`. Like `{}`, `$` can be assigned to any number of values, which are evaluated, converted to strings, conctenated, and outputted. `$` can automatically convert any integer, and any list structure which ultimately contains only integers. For example:
+```
+$ = 65,
+$ = (72+101+108+108+111+32+87+111+114+108+100+33+[]),
+```
+Results in:
+```
+A
+Hello World!
+```
 <br>
 <br>
 <br>
+
+### 4.6 - Integer Input
+The function `<` can be used to ask for input. It evaluates to whatever integer is inputed. This is shown by:
+```
+$ = (73+110+112+117+116+[]),
+< + 1, 
+```
+Returning whatever is inputed + 1, which could result in the output
+```
+Input
+4
+5
+```
+<br>
+<br>
+<br>
+
+### 4.7 - Temporary Assignments and Side Effects
+Sometimes we want to temporarily assign values. 0cam1 does this using `.`, which separates the different statements, of which the last must return a value, and the rest will only perform side effects. Any expressions in a side effect statement will merely output its result. When performing temporary assignments, `~` is used instead of `=`. All of the features of `=`, including trivialisation and character output are available through this. All temporary bindings will be lost once the final statement is evaluated. Note tha side effect statements are evaluated in order. This explains how:
+```
+3 ~ 5. 4 ~ 3 + 5. $ ~ 66. 4. 5. 3, 3
+```
+Returns with:
+```
+B
+10
+5
+5
+3
+```
+<br>
+<br>
+<br>
+
+### 4.8 - Function Operators
+0cam1 supports combining functions with operators. This produces a new anonymous function which returns the relevant to the two functions, provided it is given all of the required parameters. For example:
+```
+100 101 = 101 + 1,
+102 103 = -(103),
+100 + 102, (100 * 102) 4 6, 
+```
+Which results in:
+```
+101 103 > 101+1+- 103
+-30
+```
 
 ## Section 5: Example Code
 This section is dedicated to code showing the power and usefulness of 0cam1. 
