@@ -69,7 +69,7 @@ one19nine =equals 2twenty1one This is valid code and is equivalent to, 19=21,
 <br>
 
 ### 2.3 - Basic Expressions
-0cam1 supports a variety of integer operations, including addition via `+`, multiplication via `*`, subtraction via `-`, integer division via `/`, backwards integer division via `\`, modulo via `%`, bitwise and via `&`, and bitwise or via `|`. 
+0cam1 supports a variety of integer operations, including addition via `+`, multiplication via `*`, subtraction via `-`, integer division via `/`, backwards integer division via `\`, modulo via `%`, bitwise and via `&`, and bitwise or via `|`. Brackets are also supported by 0cam1.
 Now let's understand basic assignment. 
 <br>
 <br>
