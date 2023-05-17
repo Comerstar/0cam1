@@ -210,10 +210,10 @@ def syntax_tree(tokens, state):
             ind = tokens.index(("~", "~"))
             if ind == 1:
                 if tokens[0] == ("_", "_"):
-                    splits = split_list(tokens, ("!", "!"))
+                    splits = split_list(tokens[ind+1:], ("!", "!"))
                     patterns = []
                     for i in splits:
-                        patterns.append(syntax_tree(i, "handle"))
+                        patterns.append(syntax_tree(i, "handle_t"))
                     return ("type", patterns)
                 elif tokens[0] == ("triv", "{}"):
                     return ("assign", syntax_tree(tokens[:ind], "handle"), syntax_tree(tokens[ind+1:], "params"))
@@ -593,7 +593,6 @@ def flatten_partial_cons(res):
 # ("type", params, base) a type constructor
 # ("cons", name, params) a constructed object
 def eval_expr(tree, context, output, get_name = False):
-    
     #Evaluate a function call
     if tree[0] == "func_call":
         name = tree[1]
