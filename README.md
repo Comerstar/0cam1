@@ -4,6 +4,7 @@ A "functional" esolang with mutable numbers. To use this interpreter run the fol
 py 0cam1.py name_of_file.m1
 ```
 The file extension doesn't necessarily need to be .m1, for example you could use a .69420, .txt, or .py.
+A condensed partial code is put into code.m1, the output into output.txt, and any errors into errors.txt. These can be overwritten by the second, third and fourth arguments respectively. 
 
 The code formatting rules are vaguely similar to those of ML, but only vaguely. 
 This is part of the 69420 class of languages, with the original available here: https://github.com/ProgrammerByte/69420
