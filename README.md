@@ -42,6 +42,7 @@ This is part of the 69420 class of languages, with the original available here: 
     - [5.1 - FizzBuzz](#51---fizzbuzz)
     - [5.2 - Decimal to Binary Converter](#52---decimal-to-binary-converter)
     - [5.3 - Bubblesort](#53---bubblesort)
+    - [5.4 - Mergesort](#54---mergesort)
 
 ## Section 1: The Principles behind 0cam1
 0cam1 is designed with one core aim, and one core principle. Understanding these will make understanding the way the language functions much easier. Firstly, 0cam1 aims to give programmers the neat simplicity of functional programming, whilst giving them the power of mutability. Secondly, 0cam1 is as lazy as possible: values are only updated when they are absolutely needed. 0cam1 is also designed to be as logically consist and robust as possible, with all possible types being treated as equally as possible. Additionally, anything that does not have a return type is accessed through assignments, representing the fact that it does not return anything. 
@@ -529,4 +530,62 @@ Some test cases to show it works
 9997 (1 + 3 + 5 + 4 + 2 + []),
 9997 (5 + 4 + 3 + 2 + 1 + []),
 9997 (4 + 2 + 3 + 5 + 1 + []),
+```
+<br>
+<br>
+
+### 5.4 - Mergesort
+```
+Mergesort
+9997 9998 = (
+  Mergesort
+  10001 10002 10003 10007 10011 ~ (
+    10002 
+     ! [] > (
+       10003 
+        ! [] > (
+         10007
+          ! [] > []
+          ! + > (
+           -(10007)
+            ! [] > 10007
+            ! + > 10001 10007 [] [] 1
+         )
+       )! + > (
+         10007
+          ! [] > (
+           -(10003)
+            ! [] > 10003
+            ! + > 10001 10003 [] [] 1
+         )! + >
+           Merge sorted split lists
+           10201 (10001 10003 [] [] 1) (10001 10007 [] [] 1)
+       )
+    )
+      Split lists
+     ! + > ( 10011? 
+      10001 (-(10002)) 10003 (*10002 + 10007) 1 :
+      10001 (-(10002)) (*10002 + 10003) 10007 (-1)
+    )
+  ).
+  Merge Lists
+  10201 10205 10207 ~ (
+    10205 
+     ! [] > 10207
+     ! + > (
+      10207
+       ! [] > 10205
+       ! + >
+        (*10205 - *10207) ? 
+          *10205 + (10201 (-(10205)) 10207) :
+          *10207 + (10201 10205 (-(10207)))
+    )
+  ).
+  10001 9998 [] [] 1
+),
+
+Some test cases to demonstrate functionality
+9997 (5 + 3 + 4 + 2 + 1 + []),
+9997 (1 + 3 + 5 + 4 + 10 + 9 + 6 + 7 + 8 + 2 + []),
+9997 (10 + 4 + 6 + 7 + 3 + 2 + 8 + 1 + 5 + 9 +  []),
 ```
