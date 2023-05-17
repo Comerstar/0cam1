@@ -652,6 +652,8 @@ def eval_expr(tree, context, output, get_name = False):
                     raise Exception("Too many arguments for constructor")
             else:
                 raise Exception("Attempted to execute non-executable")
+        elif res[0] == ():
+            return ((), ())
         raise Exception("Attempted to execute non-executable")
     
     elif tree[0] == "part_f":
