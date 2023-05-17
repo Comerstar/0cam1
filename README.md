@@ -170,11 +170,14 @@ Like most functional programming languages, 0cam1 supports first class functions
 30 = 99 10,
 40 (99 5) 4,
 30 5,
+10 = 2,
+30 5,
 ```
 Evaluates to
 ```
 9
 15
+7
 ```
 This so far is not too useful, but with a few additional structures which we will look at now, mildly useful 0cam1 programs can be made. 
 <br>
