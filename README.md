@@ -286,7 +286,7 @@ Note that the names provided by trivialisation are evaluated like all names in 0
 ### 3.4 - Random Numbers
 0cam1 features the inbuilt `??` function for generating random numbers. It can be called with either 0, 1, or 2 parameters. When called with 0 parameters, it returns a random integer from 0 to 1. When called with 1 parameter, it returns a random integer from 0 to the first parameter. When called with 2 parameters, it returns a random integer between the two parameters. Here is an example:
 ```
-??, ?? 100, ?? -100 -10,
+??, ?? 100, ?? -100 (-10),
 ```
 Could evaluate to:
 ```
