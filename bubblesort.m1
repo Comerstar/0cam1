@@ -1,0 +1,20 @@
+Bubblesort
+9997 9998 = (
+ A single bubble sort pass
+ 1013 1017 ~ (1017 ! [] > [] ! + > 
+  (-(1017) ! [] > 1017 ! + > 
+   (*1017 - *(-(1017))) ?  
+   *1017 + (1013 (*(-(1017)) + -(-(1017)))) :
+   *(-(1017)) + (1013 (*1017 + -(-(1017)))))
+ ).
+ Getting the length of the list
+ 1023 1027 ~ (1027 ! [] > 0 ! + > 1 + (1023 (-(1027)))).
+ Repeating the pass a given number of times
+ 1033 1037 1039 ~ (1039 ? 1037 : 1013 (1033 1037 (1039 - 1))).
+ Repeating the pass for the number of items in the list
+ 1033 9998 (1023 9998)
+),
+Some test cases to show it works
+9997 (1 + 3 + 5 + 4 + 2 + []),
+9997 (5 + 4 + 3 + 2 + 1 + []),
+9997 (4 + 2 + 3 + 5 + 1 + []),
