@@ -1,4 +1,4 @@
-$ = (997 999 998 ~ 998 ? 999 : 997 ((998 % 2 + 48) + 999) (998 / 2). Converts decimal to binary
+$ = (997 999 998 ~ (998 ? 999 : 997 ((998 % 2 + 48) + 999) (998 / 2)). Converts decimal to binary
 
 Several test cases to show it working
 $ ~ (73+110+112+117+116+[]).
