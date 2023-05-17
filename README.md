@@ -87,7 +87,7 @@ Has the following output:
 ```
 15
 ```
-Note that care must be taken to avoid creating infinite loops. The line `1=1` will never terminate. Additionally, how the left hand side is evaluated varies. If the left hand side is a simple int, then it is not resolved to the root value, and is taken directly (so `1 = 2,` will always set `'1'` to `2` regardless of the value of `1`). Any other expression is evaluated, which can be forced by using brackets (so `(1) = 2` will force the interpreter to resolve the true value of `1`).
+Note that care must be taken to avoid creating infinite loops. The line `1=1` will never terminate. 
 <br>
 <br>
 <br>
@@ -107,7 +107,22 @@ This may be surprising, but this is because 0cam1 has to evaluate th1 true value
 <br>
 <br>
 
-### 2.6 - Functions
+### 2.6 - Name Evaluation
+Names in 0cam1 are evluated slightly differently to standard expressions. If a direct integer is given for a name, the direct integer is returned. Otherwise the expression is evaluateed. Names must always evaluate to an integer. Note that brackets can be used to force evaluation. Name evaluation is used for variable names, function names and paramters, type names and parameters, and values being trivialised. This behaviour is demonstrated by the following code:
+```
+3 = 4, (3) = 7, 3 = 6, 
+3, 4
+```
+Which evaluates to:
+```
+6
+7
+```
+<br>
+<br>
+<br>
+
+### 2.7 - Functions
 Having established how to assign integer values, we now move to creating functions. Functions are created in a very similar way to assigning integer values, simply by using `=` to set the function handle to the function's expression. Functions can have integer parameter names, including expressions. These are evaluated and consolidated once the function is created; once the function handle has been evaluated the function and parameter names will stay the same regardless of what happens to their underlying values. The name evaluation for function names and parameters is similar to that of basic assignment; simple ints are taken directly, but any other expression is resolved. Functions can be called simply by listing out the passed in parameters with whitespace between. 
 
 Let's make some simple functions to see how 0cam1 works. 
@@ -244,7 +259,7 @@ Trivially returning:
 5
 8
 ```
-Due to the fact the trivialisation alters the mappings on the base execution layer, trivialisation is not allowed within functions, and is only valid when on a line by itself. 
+Note that the names provided by trivialisation are evaluated like all names in 0cam1; if a direct value is given it is used without further evaluation, otherwise the expression is evaluated. 
 <br>
 <br>
 <br>
@@ -330,6 +345,50 @@ Which gives:
 0
 2
 ```
+<br>
+<br>
+<br>
+
+### Section 4.3 Unit
+Sometimes we want to have a dummy object that has no inherent meaning. To achieve this we use `()`, aka unit. `()` can be used for parameter names, and has the effect of discarding the parameter by not assigning it into the namespace. `()` can also be used as an input when no input is required. Additionally, `()` combined with anything else by an operator return `()`. This is all shown by the following:
+```
+5 () = 3, 5 2, 5 (), () + 2, () + 5,
+```
+Printing:
+```
+3
+3
+()
+()
+```
+<br>
+<br>
+<br>
+
+### Section 4.4 Lists
+0cam1 has an inbuilt list type. It has two associated constructors, `+` and `[]`. `[]` returns the empty list, and `h+t` conses `h` to `t`. This means that we can easily build lists as shown by the following:
+```
+1 + 2 + 3 + [],
+```
+Returning:
+```
+[1, 2, 3]
+```
+Note that lists can contain anything, from other lists to functions. 
+The `-` operator is used to get the tail of a list, whilst the `*` operator is used to get the head. These can be chained, as shown by:
+```
+1234 = 1 + 2 + 3 + 4 + [],
+-1234, *1234, ---(1234), *--(1234),
+```
+Resulting in:
+```
+-1234
+1
+[4]
+3
+```
+We can pattern match with lists as with any other data type, allowing us to rewrite our length function from earlier as:
+
 <br>
 <br>
 <br>
