@@ -835,35 +835,42 @@ with open(filename, "rb") as code:
     text = code.read().decode("utf-8")
     
 if text == "":
-    print("Failed to open code file")
+    print("Empty code")
 else:
-    tokenised_code = tokenise(text)
+    tokenised_code = []
+    try:
+        tokenised_code = tokenise(text)
+    except Exception as e:
+        print("Exception " + str(e) + " when tokenising")
     # print("Tokens: ", tokenised_code)
-    tree_code = syntax_tree(tokenised_code, "file")
-    
-    if tree_code == []:
-        print("Failed to parse file")
+    if tokenised_code == []:
+        print("Empty code")
     else:
-        filename = "code.m1"
-        if (len(sys.argv) >= 3):
-            filename = sys.argv[2]
-        with open(filename, "w") as code_file:
-            code_file.write(conv_to_code(tree_code))
-            
-        # print("Tree: ", tree_code)
-        # print("--==EXECUTING==--")
-        output, errors, final_context = execute(tree_code)
-        # print("--==FINISHED==--")
-        # print(final_context)
+        tree_code = syntax_tree(tokenised_code, "file")
         
-        filename = "output.txt"
-        if (len(sys.argv) >= 4):
-            filename = sys.argv[3]
-        with open(filename, "w") as output_file:
-            output_file.write(output)
+        if tree_code == []:
+            print("Failed to parse file")
+        else:
+            filename = "code.m1"
+            if (len(sys.argv) >= 3):
+                filename = sys.argv[2]
+            with open(filename, "w") as code_file:
+                code_file.write(conv_to_code(tree_code))
+                
+            # print("Tree: ", tree_code)
+            # print("--==EXECUTING==--")
+            output, errors, final_context = execute(tree_code)
+            # print("--==FINISHED==--")
+            # print(final_context)
             
-        filename = "error.txt"
-        if (len(sys.argv) >= 5):
-            filename = sys.argv[4]
-        with open(filename, "w") as error_file:
-            error_file.write(errors)
+            filename = "output.txt"
+            if (len(sys.argv) >= 4):
+                filename = sys.argv[3]
+            with open(filename, "w") as output_file:
+                output_file.write(output)
+                
+            filename = "error.txt"
+            if (len(sys.argv) >= 5):
+                filename = sys.argv[4]
+            with open(filename, "w") as error_file:
+                error_file.write(errors)
