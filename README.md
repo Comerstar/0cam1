@@ -136,7 +136,7 @@ Which evaluates to:
 <br>
 
 ### 2.7 - Functions
-Having established how to assign integer values, we now move to creating functions. Functions are created in a very similar way to assigning integer values, simply by using `=` to set the function handle to the function's expression. Functions can have integer parameter names, including expressions. These are evaluated and consolidated once the function is created; once the function handle has been evaluated the function and parameter names will stay the same regardless of what happens to their underlying values. The name evaluation for function names and parameters is similar to that of basic assignment; simple ints are taken directly, but any other expression is resolved. Functions can be called simply by listing out the passed in parameters with whitespace between. 
+Having established how to assign integer values, we now move to creating functions. Functions are created in a very similar way to assigning integer values, simply by using `=` to set the function handle to the function's expression. Functions can have integer parameter names, including expressions. These are evaluated and consolidated once the function is created; once the function handle has been evaluated the function and parameter names will stay the same regardless of what happens to their underlying values. 
 
 Let's make some simple functions to see how 0cam1 works. 
 ```
