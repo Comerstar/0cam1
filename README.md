@@ -20,14 +20,15 @@ This is part of the 69420 class of languages, with the original available here: 
     - [2.4 - Basic Assignment](#24---basic-assignment)
     - [2.5 - Evaluation in 0cam1](#25---evaluation-in-0cam1)
     - [2.6 - Functions](#26---functions)
-  - [Section 3: Intermediate Structures](#section-3-advanced-structures)
+  - [Section 3: Intermediate Structures](#section-3-intermediate-structures)
     - [3.1 - Conditional Execution](#31---conditional-execution)
     - [3.2 - Anonymous Functions](#32---anonymous-functions)
     - [3.3 - Trivialisation](#33---trivialisation)
-    - [3.4 - Character Output](#34-character-output)
-  - [Section 4: Example Code](#section-4-example-code)
-    - [4.1 - FizzBuzz](#41---fizzbuzz)
-    - [4.2 - Decimal to Binary Converter](#42---decimal-to-binary-converter)
+    - [3.4 - Random Numbers](#34---random-numbers)
+  - [Section 4: Advanced Structures](#section-4-advanced-structures)
+  - [Section 5: Example Code](#section-5-example-code)
+    - [5.1 - FizzBuzz](#51---fizzbuzz)
+    - [5.2 - Decimal to Binary Converter](#52---decimal-to-binary-converter)
 
 ## Section 1: The Principles behind 0cam1
 0cam1 is designed with one core aim, and one core principle. Understanding these will make understanding the way the language functions much easier. Firstly, 0cam1 aims to give programmers the neat simplicity of functional programming, whilst giving them the power of mutability. Secondly, 0cam1 is as lazy as possible: values are only updated when they are absolutely needed. 0cam1 is also designed to be as logically consist and robust as possible, with all possible types being treated as equally as possible. Additionally, anything that does not have a return type is accessed through assignments, representing the fact that it does not return anything. 
@@ -242,15 +243,45 @@ Due to the fact the trivialisation alters the mappings on the base execution lay
 ```
 ??, ?? 100, ?? -100 -10,
 ```
-Could evaluate to
+Could evaluate to:
 ```
 1
 64
 -72
 ```
+Note that this can be used for random name assignment, as with the following:
+```
+?? = 5, 0, 1
+```
+Which could evalute
+```
+0
+5
+```
+<br>
+<br>
+<br>
 
 ## Section 4: Advanced Structures
 In this section, we'll cover the most advanced 0cam1 structures. 
+## Section 4.1: Types
+0cam1 supports types. To create a type, assign to \_, akin to the following:
+```
+_ = 123 ! 124 125 126,
+```
+This creates the constructors `123` and `124`. We can then instantiate this type using the constructors. For example:
+```
+_ = 123 ! 124 125 126,
+123, 124 5 (124 6 123),
+```
+Evaluates to:
+```
+123 
+124 5 124 6 123
+```
+<br>
+<br>
+<br>
 
 ## Section 5: Example Code
 This section is dedicated to code showing the power and usefulness of 0cam1. 
