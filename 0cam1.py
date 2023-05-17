@@ -389,6 +389,8 @@ def conv_list_to_string(value, start = True):
 def conv_to_chars(value, context, output):
     if value[0] == "int":
         return chr(value[1])
+    elif value[0] == ():
+        return "()"
     elif value[0] == "type":
         if value[1] == []:
             return ""
@@ -530,25 +532,38 @@ def match_case(value, case, context, output):
                                 raise Exception("Attempted to assign to non-int")
                             temp_context[res[1]] = eval_expr(value[2][i], context, output)
                     return True, temp_context
+                elif value[0] == ():
+                    return False, context
                 else:
                     raise Exception("Attempted to compare a constructor to a non-constructor")
                     
             elif val[0] == "int":
-                if value[0] != "int":
-                    raise Exception("Attempted to compare an int to a non-int")
-                if val[1] == value[1]:
+                if value[0] == "int" and val[1] == value[1]:
                     return True, context
+                elif value[0] == ():
+                    return False, context
+                else:
+                    raise Exception("Attempted to compare an int to a non-int")
                 
             elif val[0] == "func":
                 if value[0] == "func":
                     pass
                 elif value[0] == "type":
                     pass
+                elif value[0] == ():
+                    return False, context
                 
             elif val[0] == "cons":
                 if val[2] == []:
                     if value[0] in ("cons", "int"):
                         return (name == value[1]), context
+                elif value[0] == ():
+                    return False, context
+                
+            elif val[0] == ():
+                if value[0] == ():
+                    return True, context
+                return False, context
                     
             raise Exception("Missing match case " + str(val[0]) + " with " + str(value[0]))
     else:
@@ -653,6 +668,8 @@ def eval_expr(tree, context, output, get_name = False):
             else:
                 raise Exception("Attempted to execute non-executable")
         elif res[0] == ():
+            if get_name:
+                return ("name", (), ((), ()))
             return ((), ())
         raise Exception("Attempted to execute non-executable")
     
@@ -685,6 +702,10 @@ def eval_expr(tree, context, output, get_name = False):
             matched, new_context = match_case(val, i[1], context, output)
             if matched:
                 return eval_expr(i[2], new_context, output, get_name)
+        if val[0] == ():
+            if get_name:
+                return ("name", (), ((), ()))
+            return ((), ())
         raise Exception ("Failed to match a case")
     
     elif tree[0] == "a_func":
@@ -704,13 +725,17 @@ def eval_expr(tree, context, output, get_name = False):
     elif tree[0] == "cond":
         cond = tree[1]
         res = eval_expr(cond, context, output)
-        if res[0] != "int":
-            print(tree, "\n", res)
-            raise Exception("Attempted to compare to a non-int")
-        if res[1] <= 0:
-            return eval_expr(tree[2], context, output, get_name)
+        if res[0] == "int":
+            if res[1] <= 0:
+                return eval_expr(tree[2], context, output, get_name)
+            else:
+                return eval_expr(tree[3], context, output, get_name)
+        elif res[0] == ():
+            if get_name:
+                return ("name", (), ((), ()))
+            return ((), ())
         else:
-            return eval_expr(tree[3], context, output, get_name)
+            raise Exception("Attempted to compare to a non-int")
         
     elif tree[0] in "+-/*%&|\\":
         res1 = eval_expr(tree[1], context, output)
@@ -754,6 +779,8 @@ def eval_expr(tree, context, output, get_name = False):
                 
             raise Exception("Invalid operator combination")
         elif res1[0] == () or res2[0] == ():
+            if get_name:
+                return ("name", (), ((), ()))
             return ((), ())
         else:
             raise Exception("Invalid operator combination " + str(res1[0]) + " " + str(res2[0]))
@@ -762,10 +789,14 @@ def eval_expr(tree, context, output, get_name = False):
         res = eval_expr(tree[1], context, output)
         if res[0] == "int":
             return eval_expr(("int", -res[1]), context, output, get_name)
-        if res[0] == "cons" and res[1] == "+":
+        elif res[0] == "cons" and res[1] == "+":
             if get_name:
                 return ("name", (), res[2][1])
             return res[2][1]
+        elif res[0] == ():
+            if get_name:
+                return ("name", (), ((), ()))
+            return ((), ())
         raise Exception("Attempted to negate an invalid object")
     
     elif tree[0] == "star":
@@ -774,6 +805,10 @@ def eval_expr(tree, context, output, get_name = False):
             if get_name:
                 return ("name", (), res[2][0])
             return res[2][0]
+        elif res[0] == ():
+            if get_name:
+                return ("name", (), ((), ()))
+            return ((), ())
         raise Exception("Attempted to star an invalid object")
     
     elif tree[0] == "type":
@@ -821,6 +856,11 @@ def eval_expr(tree, context, output, get_name = False):
         return ("int", random.randint(0, 1))
     
     elif tree[0] == "unit":
+        if get_name:
+            return("name", (), ((), ()))
+        return ((), ())
+    
+    elif tree[0] == ():
         if get_name:
             return("name", (), ((), ()))
         return ((), ())
