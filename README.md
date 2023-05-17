@@ -359,14 +359,17 @@ Which gives:
 <br>
 
 ### 4.3 - Unit
-Sometimes we want to have a dummy object that has no inherent meaning. To achieve this we use `()`, aka unit. `()` can be used for parameter names, and has the effect of discarding the parameter by not assigning it into the namespace. `()` can also be used as an input when no input is required. Additionally, `()` combined with anything else by an operator returns `()`, and `()` returns `()` when called as a function with anything. This is all shown by the following:
+Sometimes we want to have a dummy object that has no inherent meaning. To achieve this we use `()`, aka unit. `()` can be used for parameter names, and has the effect of discarding the parameter by not assigning it into the namespace. `()` can also be used as an input when no input is required. Additionally, `()` combined with anything else by an operator returns `()`, `()` returns `()` when called as a function with anything, `()` returns `()` when compared, `()` returns `()` if it fails a pattern match, and `()` will print `()` when converted to a string. This is all shown by the following:
 ```
-5 () = 3, 5 2, 5 (), () + 2, () + 5, () 1 2,
+5 () = 3, 5 2, 5 (), () + 2, () + 5, () 1 2, () ? 1 : 2, () ! 1 > 2, $ = (),
 ```
 Printing:
 ```
 3
 3
+()
+()
+()
 ()
 ()
 ()
